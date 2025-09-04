@@ -1,1 +1,9 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=20315877&assignment_repo_type=AssignmentRepo)
+# Gestão de folha de pagamento
+
+Este projeto é um sistema de gestão de folha de pagamento desenvolvido como trabalho final para a disciplina de Programação Modular. O objetivo é construir uma aplicação backend robusta seguindo princípios de modularidade, programação orientada a objetos (POO), SOLID e qualidade de software, com cobertura de testes unitários.
+
+## Tecnologias Utilizadas
+
+* **Backend:** Java com Spring Boot 
+* **Banco de Dados:** A ser definido
+* **Frontend:** A ser definido
