@@ -1,1 +1,20 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=20315877&assignment_repo_type=AssignmentRepo)
+# Sistema de Gestão de Folha de Pagamento
+
+Trabalho final da disciplina **Programação Modular** – PUC Minas  
+Professor: Paulo Henrique D. S. Coelho
+
+## 🚀 Sobre o projeto
+
+Um sistema de folha de pagamento é uma ferramenta essencial para o departamento de Recursos Humanos de uma empresa.
+Este projeto tem como objetivo automatizar o processo de cálculo dos salários dos funcionários, aplicando os descontos obrigatórios (como impostos e contribuições) e benefícios, para determinar o valor líquido a ser pago em um período.
+
+O desenvolvimento é guiado por princípios de qualidade de software, como modularidade, Programação Orientada a Objetos (POO), padrões SOLID e uma cobertura de testes unitários.
+
+## 🛠️ Construído com
+
+- **Java**
+- **Spring Boot**
+- **JUnit**
+- **Maven**
+- **Banco de Dados:** A definir
+- **Frontend:** A definir
