@@ -20,4 +20,25 @@ O processo de cálculo parte do salário bruto, sobre o qual são aplicados os a
 
 ## Modelos das telas do frontend
 
+Tela de login
+
+![](images/interface-login.png)
+
+Tela inicial, indica as principais funcionalidades, mostra as folha de pagamentos recentes e os índices mensais.
+
+![](images/interface-1.png)
+
+Acesso aos funcionários cadastrados, sendo possível pesquisar por nome e ver sobre um funcionário específico.
+
+![](images/interface-2.png)
+
+Visão geral da folha de pagamento, com os benefícios, salário base e descontos.
+
+![](images/interface-3.png)
+
+Acesso aos gráficos e estatísticas do salário mensal de todos os funcionários.
+
+![](images/interface-5.png)
+![](images/interface-6.png)
+
 ## Casos de teste
