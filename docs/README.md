@@ -60,3 +60,103 @@ Acesso aos gráficos e estatísticas do salário mensal de todos os funcionário
 | CT13   | **Desconto – Advertência**             | Garantir aplicação de desconto por advertência         | Registro de advertência                              | Valor abatido corretamente                             |
 | CT14   | **Encargo Social – FGTS**              | Validar cálculo do FGTS                                | Salário bruto                                        | 8% do salário bruto registrado                         |
 | CT15   | **Relatorio**                          | Gerar relatório de folha de pagamento                  | Folha processada                                     | Relatório com cabeçalho, proventos, descontos e resumo |
+
+---
+
+# Documentação - Cartões CRC
+
+Os cartões CRC (Classe – Responsabilidade – Colaboração) são uma técnica utilizada no processo de modelagem orientada a objetos.  
+Eles ajudam a representar de forma simples e visual as principais responsabilidades de uma classe e como ela se relaciona com outras classes dentro de um sistema.
+
+---
+
+---
+
+## Cartões CRC
+
+### Funcionário
+**Responsabilidades:**
+- Armazenar dados pessoais e contratuais (nome, CPF, cargo, salário bruto, dependentes, data de admissão).  
+- Fornecer informações necessárias para cálculos da folha.  
+
+**Colaborações:**
+- Folha de Pagamento (fornece os dados para cálculos).  
+- Cálculo Financeiro (usado indiretamente para cálculos).  
+
+---
+
+### Folha de Pagamento
+**Responsabilidades:**
+- Gerenciar o vínculo com o funcionário.  
+- Guardar dados da folha (mês de referência, salário hora, salário líquido).  
+- Gerar relatório consolidado da folha de pagamento.  
+- Agregar proventos e descontos.  
+
+**Colaborações:**
+- Funcionário (para obter salário bruto, dependentes etc.).  
+- Cálculo Financeiro (para realizar os cálculos).  
+- Provento e Desconto (lista de itens que compõem a folha).  
+
+---
+
+### Cálculo Financeiro
+**Responsabilidades:**
+- Calcular salário líquido.  
+- Calcular salário hora.  
+
+**Colaborações:**
+- Funcionário (usa seus dados para calcular valores).  
+- Folha de Pagamento (retorna valores para serem exibidos/armazenados).  
+
+---
+
+### Provento (Interface)
+**Responsabilidades:**
+- Representar um item de ganho na folha (salário base, benefícios, adicionais).  
+- Armazenar descrição e valor.  
+
+**Colaborações:**
+- Folha de Pagamento.  
+
+**Exemplos de Proventos:**
+- Adicional de Periculosidade  
+- Adicional de Insalubridade  
+- Vale Alimentação  
+
+---
+
+### Desconto (Interface)
+**Responsabilidades:**
+- Exibir detalhamento de proventos, descontos e valor líquido.  
+
+**Colaborações:**
+- Folha de Pagamento.  
+
+**Exemplos de Descontos:**
+- Desconto INSS  
+- Desconto IRFF  
+- Cálculo FGTS  
+- Vale Alimentação  
+
+---
+
+### Vale Transporte (Interface Provento e Desconto)
+**Responsabilidades:**
+- Representar o benefício Vale Transporte, podendo atuar tanto como Provento quanto como Desconto.  
+
+**Colaborações:**
+- Folha de Pagamento.  
+
+---
+
+### Relatório
+**Responsabilidades:**
+- Saber os dados do funcionário, financeiro, proventos e descontos.  
+- Exibir um relatório detalhado com os dados.  
+
+**Colaborações:**
+- Folha de Pagamento  
+- Funcionário  
+- Financeiro  
+
+---
