@@ -1,4 +1,4 @@
-package com.trabalhopm.folha_pagamento;
+package com.trabalhopm.folha_pagamento.domain;
 import java.math.BigDecimal;
 
 public class Financeiro {
