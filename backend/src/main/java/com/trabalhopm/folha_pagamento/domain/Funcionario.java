@@ -14,7 +14,7 @@ public class Funcionario {
     private String cpf;
     private String cargo;
     private LocalDate dataAdmissao;
-    private byte numeroDeDepententes;
+    private byte numeroDeDependentes;
     private byte nivelInsalubridade;
 
     @Setter
@@ -24,47 +24,45 @@ public class Funcionario {
     private Financeiro financeiro;
 
     public void setNome(String nome) {
-        if(nome == null || nome.isEmpty()){
+        if (nome == null || nome.isEmpty()) {
             throw new IllegalArgumentException("O nome não pode ser vazio");
         }
         this.nome = nome;
     }
 
     public void setCpf(String cpf) {
-        //TODO! colocar logica para validar cpf :D
-        if(cpf == null || cpf.isEmpty()){
+        if (cpf == null || cpf.isEmpty()) {
             throw new IllegalArgumentException("O CPF não pode ser vazio");
         }
         this.cpf = cpf;
     }
 
     public void setCargo(String cargo) {
-        if(cargo == null || cargo.isEmpty()){
+        if (cargo == null || cargo.isEmpty()) {
             throw new IllegalArgumentException("O cargo não pode ser vazio");
         }
         this.cargo = cargo;
     }
 
     public void setDataAdmissao(LocalDate dataAdmissao) {
-        if(dataAdmissao == null || dataAdmissao.isAfter(LocalDate.now())){
+        if (dataAdmissao == null || dataAdmissao.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("A data de admissão não é válida");
         }
         this.dataAdmissao = dataAdmissao;
     }
 
-    public void setNumeroDeDepententes(byte numeroDeDepententes) {
-        if(numeroDeDepententes < 0){
-            throw new IllegalArgumentException("A quantidade de dependentes é inválida");
+    public void setNumeroDeDependentes(byte numeroDeDependentes) {
+        if (numeroDeDependentes < 0) {
+            throw new IllegalArgumentException("Número de dependentes inválido");
         }
-        this.numeroDeDepententes = numeroDeDepententes;
+        this.numeroDeDependentes = numeroDeDependentes;
     }
 
     public void setNivelInsalubridade(byte nivelInsalubridade) {
-        if(nivelInsalubridade >= 0 && nivelInsalubridade <= 100){
+        if (nivelInsalubridade >= 0 && nivelInsalubridade <= 100) {
             this.nivelInsalubridade = nivelInsalubridade;
-        }
-        else{
-            throw new IllegalArgumentException("O nível de insalubridade é inválido");
+        } else {
+            throw new IllegalArgumentException("Nível de insalubridade inválido");
         }
     }
 }
