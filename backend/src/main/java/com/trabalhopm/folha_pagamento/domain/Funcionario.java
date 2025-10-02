@@ -2,6 +2,7 @@ package com.trabalhopm.folha_pagamento.domain;
 
 import java.time.LocalDate;
 
+import com.trabalhopm.folha_pagamento.domain.enums.NivelInsalubridade;
 import com.trabalhopm.folha_pagamento.utils.ValidaCPF;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -30,9 +31,7 @@ public class Funcionario {
     @PositiveOrZero(message = "O número de dependentes não pode ser negativo")
     private byte numeroDeDependentes;
 
-    @Min(0)
-    @Max(100)
-    private byte nivelInsalubridade;
+    private NivelInsalubridade nivelInsalubridade;
 
     private boolean temPericulosidade;
 
