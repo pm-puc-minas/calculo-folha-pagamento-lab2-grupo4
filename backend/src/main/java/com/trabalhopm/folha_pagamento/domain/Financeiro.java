@@ -1,86 +1,38 @@
 package com.trabalhopm.folha_pagamento.domain;
-
+import lombok.Setter;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Financeiro {
+    
+    @NotNull(message = "O salário bruto não pode ser nulo")
+    @PositiveOrZero(message = "O salário bruto deve ser maior que zero")
     private BigDecimal salarioBruto;
+
+    @PositiveOrZero(message = "As horas trabalhadas por dia devem ser maiores que zero")
     private double horasTrabalhadasDia;
+
+    @Min(value = 0, message = "Os dias trabalhados na semana devem ser entre 0 e 7")
+    @Max(value = 7, message = "Os dias trabalhados na semana devem ser entre 0 e 7")
     private byte diasTrabalhadosSemana;
+
+    @PositiveOrZero(message = "O valor diário do vale transporte não pode ser negativo")
     private BigDecimal valorDiarioValeTransporte;
+
+    @PositiveOrZero(message = "O valor diário do vale alimentação não pode ser negativo")
     private BigDecimal valorDiarioValeAlimentacao;
+
+    @PositiveOrZero(message = "As horas extras mensais não podem ser negativas")
     private BigDecimal horaExtraMensal = BigDecimal.ZERO;
-
-    public Financeiro(BigDecimal salarioBruto, double horasTrabalhadasDia,
-                      byte diasTrabalhadosSemana,
-                      BigDecimal valorDiarioValeTransporte,
-                      BigDecimal valorDiarioValeAlimentacao) {
-        setSalarioBruto(salarioBruto);
-        setHorasTrabalhadasDia(horasTrabalhadasDia);
-        setDiasTrabalhadosSemana(diasTrabalhadosSemana);
-        setValorDiarioValeTransporte(valorDiarioValeTransporte);
-        setValorDiarioValeAlimentacao(valorDiarioValeAlimentacao);
-    }
-
-    public BigDecimal getSalarioBruto() { return salarioBruto; }
-    public double getHorasTrabalhadasDia() { return horasTrabalhadasDia; }
-    public byte getDiasTrabalhadosSemana() { return diasTrabalhadosSemana; }
-    public BigDecimal getValorDiarioValeTransporte() { return valorDiarioValeTransporte; }
-    public BigDecimal getValorDiarioValeAlimentacao() { return valorDiarioValeAlimentacao; }
-    public BigDecimal getHoraExtraMensal() { return horaExtraMensal; }
-
-    public void setSalarioBruto(BigDecimal salarioBruto) {
-        if (salarioBruto == null || salarioBruto.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Salário bruto deve ser maior que zero.");
-        }
-        this.salarioBruto = salarioBruto;
-    }
-
-    public void setHorasTrabalhadasDia(double horasTrabalhadasDia) {
-        if (horasTrabalhadasDia <= 0) {
-            throw new IllegalArgumentException("Horas trabalhadas devem ser > 0.");
-        }
-        if (horasTrabalhadasDia > 8) {
-            this.horaExtraMensal = BigDecimal.valueOf(horasTrabalhadasDia - 8);
-            this.horasTrabalhadasDia = 8;
-        } else {
-            this.horasTrabalhadasDia = horasTrabalhadasDia;
-        }
-    }
-
-    public void setDiasTrabalhadosSemana(byte diasTrabalhadosSemana) {
-        if (diasTrabalhadosSemana < 0 || diasTrabalhadosSemana > 7) {
-            throw new IllegalArgumentException("Dias trabalhados na semana devem estar entre 0 e 7.");
-        }
-        this.diasTrabalhadosSemana = diasTrabalhadosSemana;
-    }
-
-    public void setValorDiarioValeTransporte(BigDecimal valor) {
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Vale transporte não pode ser negativo.");
-        }
-        this.valorDiarioValeTransporte = valor;
-    }
-
-    public void setValorDiarioValeAlimentacao(BigDecimal valor) {
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Vale alimentação não pode ser negativo.");
-        }
-        this.valorDiarioValeAlimentacao = valor;
-    }
-
-    // Cálculo de salário-hora (aprox. 4 semanas no mês)
-    public BigDecimal getSalarioHora() {
-        int horasMes = diasTrabalhadosSemana * (int) horasTrabalhadasDia * 4;
-        return salarioBruto.divide(BigDecimal.valueOf(horasMes), 2, BigDecimal.ROUND_HALF_UP);
-    }
-
-    // Custo mensal do VA
-    public BigDecimal getCustoValeAlimentacaoMensal() {
-        return valorDiarioValeAlimentacao.multiply(BigDecimal.valueOf(diasTrabalhadosSemana * 4));
-    }
-
-    // Custo mensal do VT
-    public BigDecimal getCustoValeTransporteMensal() {
-        return valorDiarioValeTransporte.multiply(BigDecimal.valueOf(diasTrabalhadosSemana * 4));
-    }
 }
