@@ -58,13 +58,13 @@ public class FolhaPagamento {
     @PositiveOrZero(message = "O valor do FGTS não pode ser negativo")
     private BigDecimal valorFGTS = BigDecimal.ZERO;
 
-    // Construtor adicional conforme diagrama
+     
     public FolhaPagamento(@NotNull Funcionario funcionario, @NotNull YearMonth periodo) {
         this.funcionario = funcionario;
         this.periodo = periodo;
     }
 
-    // Métodos utilitários
+    
     public void adicionarProvento(@NotNull Provento provento) {
         proventos.add(provento);
     }
@@ -74,7 +74,7 @@ public class FolhaPagamento {
     }
 
     public void processarCalculos() {
-        // Exemplo simplificado: soma proventos e descontos
+        
         totalProventos = proventos.stream()
                 .map(Provento::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -85,6 +85,6 @@ public class FolhaPagamento {
 
         salarioLiquido = totalProventos.subtract(totalDescontos);
 
-        // Aqui ficariam as regras reais de INSS, IRRF, FGTS etc.
+        // Regras reais de INSS, IRRF, FGTS 
     }
 }
