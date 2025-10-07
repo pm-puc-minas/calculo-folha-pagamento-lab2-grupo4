@@ -7,14 +7,14 @@ import java.math.BigDecimal;
 
 @Component
 public class Periculosidade implements Provento {
-    private final BigDecimal adicional = new BigDecimal("0.3");
+    private final BigDecimal ADICIONAL = new BigDecimal("0.3");
 
     @Override
     public BigDecimal calcular(Funcionario funcionario) {
         if (!funcionario.isTemPericulosidade()) {
             return BigDecimal.ZERO;
         }
-        return funcionario.getFinanceiro().getSalarioBruto().multiply(adicional);
+        return funcionario.getFinanceiro().getSalarioBruto().multiply(ADICIONAL);
     }
 
     @Override

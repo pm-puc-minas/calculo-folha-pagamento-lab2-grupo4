@@ -8,11 +8,11 @@ import java.math.RoundingMode;
 
 @Component
 public class Ferias implements Provento {
-    private final BigDecimal umTerco = new BigDecimal("1").divide(new BigDecimal("3"), 10, RoundingMode.HALF_UP);
+    private final BigDecimal UM_TERCO = new BigDecimal("1").divide(new BigDecimal("3"), 10, RoundingMode.HALF_UP);
 
     @Override
     public BigDecimal calcular(Funcionario funcionario) {
-        BigDecimal tercoConstitucional = funcionario.getFinanceiro().getSalarioBruto().multiply(umTerco);
+        BigDecimal tercoConstitucional = funcionario.getFinanceiro().getSalarioBruto().multiply(UM_TERCO);
         return funcionario.getFinanceiro().getSalarioBruto().add(tercoConstitucional).setScale(2, RoundingMode.HALF_UP);
     }
 

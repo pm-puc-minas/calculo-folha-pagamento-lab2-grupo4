@@ -7,17 +7,17 @@ import java.math.BigDecimal;
 
 @Component
 public class Insalubridade implements Provento {
-    private final BigDecimal adicionalBaixo = new BigDecimal("0.1");
-    private final BigDecimal adicionalMedio = new BigDecimal("0.2");
-    private final BigDecimal adicionalAlto = new BigDecimal("0.4");
-    private final BigDecimal salarioMinimo = new BigDecimal("1518");
+    private final BigDecimal ADICIONAL_BAIXO = new BigDecimal("0.1");
+    private final BigDecimal ADICIONAL_MEDIO = new BigDecimal("0.2");
+    private final BigDecimal ADICIONAL_ALTO = new BigDecimal("0.4");
+    private final BigDecimal SALARIO_MINIMO = new BigDecimal("1518");
 
     @Override
     public BigDecimal calcular(Funcionario funcionario) {
         return switch (funcionario.getNivelInsalubridade()) {
-            case BAIXO -> salarioMinimo.multiply(adicionalBaixo);
-            case MEDIO -> salarioMinimo.multiply(adicionalMedio);
-            case ALTO -> salarioMinimo.multiply(adicionalAlto);
+            case BAIXO -> SALARIO_MINIMO.multiply(ADICIONAL_BAIXO);
+            case MEDIO -> SALARIO_MINIMO.multiply(ADICIONAL_MEDIO);
+            case ALTO -> SALARIO_MINIMO.multiply(ADICIONAL_ALTO);
             default -> BigDecimal.ZERO;
         };
     }
