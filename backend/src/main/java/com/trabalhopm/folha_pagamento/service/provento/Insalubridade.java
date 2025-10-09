@@ -4,6 +4,7 @@ import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.YearMonth;
 
 @Component
 public class Insalubridade implements Provento {
@@ -13,7 +14,7 @@ public class Insalubridade implements Provento {
     private final BigDecimal SALARIO_MINIMO = new BigDecimal("1518");
 
     @Override
-    public BigDecimal calcular(Funcionario funcionario) {
+    public BigDecimal calcular(Funcionario funcionario, YearMonth mesReferencia) {
         return switch (funcionario.getNivelInsalubridade()) {
             case BAIXO -> SALARIO_MINIMO.multiply(ADICIONAL_BAIXO);
             case MEDIO -> SALARIO_MINIMO.multiply(ADICIONAL_MEDIO);
