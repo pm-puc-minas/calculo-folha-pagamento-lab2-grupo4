@@ -4,7 +4,7 @@ import com.trabalhopm.folha_pagamento.domain.Funcionario;
 
 import java.math.BigDecimal;
 
-public interface EncargoSocial {
+public interface IEncargoSocial {
     BigDecimal calcular(Funcionario funcionario);
     String getNome();
 }

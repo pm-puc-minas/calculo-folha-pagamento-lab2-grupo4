@@ -3,7 +3,7 @@ package com.trabalhopm.folha_pagamento.service.desconto;
 
 import java.math.BigDecimal;
 
-public class INSS implements Desconto {
+public class INSS implements IDesconto {
     private static final BigDecimal FAIXA1 = new BigDecimal("1518.00");
     private static final BigDecimal FAIXA2 = new BigDecimal("2793.88");
 
@@ -20,6 +20,6 @@ public class INSS implements Desconto {
 
     @Override
     public String getNome() {
-        return "INSS";
+        return this.getClass().getSimpleName();
     }
 }

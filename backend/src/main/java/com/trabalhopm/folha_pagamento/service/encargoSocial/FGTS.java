@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
-public class FGTS implements EncargoSocial {
+public class FGTS implements IEncargoSocial {
 
     private final BigDecimal taxaRecolhimento = new BigDecimal("0.08");
 
@@ -17,6 +17,6 @@ public class FGTS implements EncargoSocial {
 
     @Override
     public String getNome() {
-        return "FGTS";
+        return this.getClass().getSimpleName();
     }
 }

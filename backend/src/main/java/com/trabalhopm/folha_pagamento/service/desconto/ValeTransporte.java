@@ -3,7 +3,7 @@ package com.trabalhopm.folha_pagamento.service.desconto;
 
 import java.math.BigDecimal;
 
-public class ValeTransporte implements Desconto {
+public class ValeTransporte implements IDesconto {
     private static final BigDecimal TAXA = new BigDecimal("0.06");
 
     @Override
@@ -13,6 +13,6 @@ public class ValeTransporte implements Desconto {
 
     @Override
     public String getNome() {
-        return "Vale Transporte";
+        return this.getClass().getSimpleName();
     }
 }

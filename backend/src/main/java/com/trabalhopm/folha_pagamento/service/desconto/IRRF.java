@@ -3,7 +3,7 @@ package com.trabalhopm.folha_pagamento.service.desconto;
 
 import java.math.BigDecimal;
 
-public class IRRF implements Desconto {
+public class IRRF implements IDesconto {
     private static final BigDecimal FAIXA1 = new BigDecimal("2259.20");
     private static final BigDecimal FAIXA2 = new BigDecimal("3451.05");
 
@@ -20,7 +20,7 @@ public class IRRF implements Desconto {
 
     @Override
     public String getNome() {
-        return "IRRF";
+        return this.getClass().getSimpleName();
     }
 }
 

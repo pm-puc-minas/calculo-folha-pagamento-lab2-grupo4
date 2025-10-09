@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
-public class ValeAlimentacao implements Provento {
+public class ValeAlimentacao implements IProvento {
     private final BigDecimal VALOR_DIARIO = new BigDecimal("32");
 
     @Override
@@ -39,6 +39,6 @@ public class ValeAlimentacao implements Provento {
 
     @Override
     public String getNome() {
-        return "Vale Alimentação";
+        return this.getClass().getSimpleName();
     }
 }

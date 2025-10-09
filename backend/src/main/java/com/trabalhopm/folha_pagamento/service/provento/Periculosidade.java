@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.YearMonth;
 
 @Component
-public class Periculosidade implements Provento {
+public class Periculosidade implements IProvento {
     private final BigDecimal ADICIONAL = new BigDecimal("0.3");
 
     @Override
@@ -20,6 +20,6 @@ public class Periculosidade implements Provento {
 
     @Override
     public String getNome() {
-        return "Periculosidade";
+        return this.getClass().getSimpleName();
     }
 }

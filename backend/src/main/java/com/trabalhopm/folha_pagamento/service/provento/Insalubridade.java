@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.YearMonth;
 
 @Component
-public class Insalubridade implements Provento {
+public class Insalubridade implements IProvento {
     private final BigDecimal ADICIONAL_BAIXO = new BigDecimal("0.1");
     private final BigDecimal ADICIONAL_MEDIO = new BigDecimal("0.2");
     private final BigDecimal ADICIONAL_ALTO = new BigDecimal("0.4");
@@ -25,6 +25,6 @@ public class Insalubridade implements Provento {
 
     @Override
     public String getNome() {
-        return "Insalubridade";
+        return this.getClass().getSimpleName();
     }
 }

@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 import java.time.YearMonth;
 
 @Component
-public class Ferias implements Provento {
+public class Ferias implements IProvento {
     private final BigDecimal UM_TERCO = new BigDecimal("1").divide(new BigDecimal("3"), 10, RoundingMode.HALF_UP);
 
     @Override
@@ -19,6 +19,6 @@ public class Ferias implements Provento {
 
     @Override
     public String getNome(){
-        return "Ferias";
+        return this.getClass().getSimpleName();
     }
 }

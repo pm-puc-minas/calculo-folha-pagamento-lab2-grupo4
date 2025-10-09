@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalculadoraSalario {
-    private final List<Desconto> descontos = new ArrayList<>();
+    private final List<IDesconto> descontos = new ArrayList<>();
 
-    public void adicionarDesconto(Desconto desconto) {
+    public void adicionarDesconto(IDesconto desconto) {
         this.descontos.add(desconto);
     }
 
-    public BigDecimal calcularSalarioLiquido(BigDecimal salarioBruto) {
+    public BigDecimal calcularSalarioLiquido(BigDecimal salarioBruto) throws Exception {
         BigDecimal totalDescontos = BigDecimal.ZERO;
 
         System.out.println("=== Relatório de Descontos ===");
-        for (Desconto d : descontos) {
+        for (IDesconto d : descontos) {
             BigDecimal valorDesconto = d.calcular(salarioBruto);
             System.out.println(d.getNome() + ": R$ " + valorDesconto);
             totalDescontos = totalDescontos.add(valorDesconto);
