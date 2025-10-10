@@ -1,5 +1,8 @@
 package com.trabalhopm.folha_pagamento.domain;
 
+import com.trabalhopm.folha_pagamento.service.provento.IProvento;
+import com.trabalhopm.folha_pagamento.service.desconto.IDesconto;
+
 import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +28,9 @@ public class FolhaPagamento {
     @NotNull(message = "O período da folha não pode ser nulo")
     private YearMonth periodo;
 
-    private List<Provento> proventos = new ArrayList<>();
-    private List<Desconto> descontos = new ArrayList<>();
+    // Agora usamos as interfaces em vez das classes inexistentes
+    private List<IProvento> proventos = new ArrayList<>();
+    private List<IDesconto> descontos = new ArrayList<>();
 
     @PositiveOrZero(message = "O valor do salário/hora não pode ser negativo")
     private BigDecimal valorSalarioHora = BigDecimal.ZERO;
@@ -58,33 +62,36 @@ public class FolhaPagamento {
     @PositiveOrZero(message = "O valor do FGTS não pode ser negativo")
     private BigDecimal valorFGTS = BigDecimal.ZERO;
 
-     
+
     public FolhaPagamento(@NotNull Funcionario funcionario, @NotNull YearMonth periodo) {
         this.funcionario = funcionario;
         this.periodo = periodo;
     }
 
-    
-    public void adicionarProvento(@NotNull Provento provento) {
+    // Métodos atualizados
+    public void adicionarProvento(@NotNull IProvento provento) {
         proventos.add(provento);
     }
 
-    public void adicionarDesconto(@NotNull Desconto desconto) {
+    public void adicionarDesconto(@NotNull IDesconto desconto) {
         descontos.add(desconto);
     }
 
-    public void processarCalculos() {
-        
-        totalProventos = proventos.stream()
-                .map(Provento::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public void processarCalculos() throws Exception {
 
-        totalDescontos = descontos.stream()
-                .map(Desconto::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        // Total de proventos
+        totalProventos = BigDecimal.ZERO;
+        for (IProvento p : proventos) {
+            totalProventos = totalProventos.add(p.calcular(funcionario, periodo));
+        }
 
+        // Total de descontos
+        totalDescontos = BigDecimal.ZERO;
+        for (IDesconto d : descontos) {
+            totalDescontos = totalDescontos.add(d.calcular(funcionario.getFinanceiro().getSalarioBruto()));
+        }
+
+        // Salário líquido
         salarioLiquido = totalProventos.subtract(totalDescontos);
-
-        // Regras reais de INSS, IRRF, FGTS 
     }
 }
