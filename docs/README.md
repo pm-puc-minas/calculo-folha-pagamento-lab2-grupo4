@@ -12,8 +12,6 @@ A folha de pagamento possui três propósitos principais:
 
 O processo de cálculo parte do salário bruto, sobre o qual são aplicados os adicionais e benefícios, e são deduzidos os descontos. O objetivo final do sistema é automatizar essa rotina para apurar o salário líquido e exibir um relatório detalhado.
 
-## Cartões CRC
-
 ## Diagrama de Classes
 
 ![Diagrama UML](images/diagrama-uml.png)

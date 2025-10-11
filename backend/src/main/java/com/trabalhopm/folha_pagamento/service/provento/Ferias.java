@@ -5,19 +5,20 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.YearMonth;
 
 @Component
-public class Ferias implements Provento {
+public class Ferias implements IProvento {
     private final BigDecimal UM_TERCO = new BigDecimal("1").divide(new BigDecimal("3"), 10, RoundingMode.HALF_UP);
 
     @Override
-    public BigDecimal calcular(Funcionario funcionario) {
+    public BigDecimal calcular(Funcionario funcionario, YearMonth mesReferencia) {
         BigDecimal tercoConstitucional = funcionario.getFinanceiro().getSalarioBruto().multiply(UM_TERCO);
-        return funcionario.getFinanceiro().getSalarioBruto().add(tercoConstitucional).setScale(2, RoundingMode.HALF_UP);
+        return tercoConstitucional.setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
     public String getNome(){
-        return "Ferias";
+        return this.getClass().getSimpleName();
     }
 }

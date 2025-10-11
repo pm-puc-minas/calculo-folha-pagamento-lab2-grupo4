@@ -29,10 +29,4 @@ public class Financeiro {
 
     @PositiveOrZero(message = "O valor diário do vale transporte não pode ser negativo")
     private BigDecimal valorDiarioValeTransporte;
-
-    @PositiveOrZero(message = "O valor diário do vale alimentação não pode ser negativo")
-    private BigDecimal valorDiarioValeAlimentacao;
-
-    @PositiveOrZero(message = "As horas extras mensais não podem ser negativas")
-    private BigDecimal horaExtraMensal = BigDecimal.ZERO;
 }

@@ -4,13 +4,14 @@ import com.trabalhopm.folha_pagamento.domain.Funcionario;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.YearMonth;
 
-public class SalarioFamilia implements Provento{
+public class SalarioFamilia implements IProvento {
     private final BigDecimal TETO_SALARIAL = new BigDecimal("1906.04");
     private final BigDecimal VALOR_COTA_POR_DEPENDENTE = new BigDecimal("65");
 
     @Override
-    public BigDecimal calcular(Funcionario funcionario) {
+    public BigDecimal calcular(Funcionario funcionario, YearMonth mesReferencia) {
         if(funcionario.getFinanceiro().getSalarioBruto().compareTo(TETO_SALARIAL) > 0){
             return BigDecimal.ZERO;
         }
@@ -27,6 +28,6 @@ public class SalarioFamilia implements Provento{
 
     @Override
     public String getNome(){
-        return "Salário Família";
+        return this.getClass().getSimpleName();
     }
 }
