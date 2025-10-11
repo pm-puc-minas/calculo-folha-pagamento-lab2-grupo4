@@ -21,7 +21,7 @@ public class ValeAlimentacao implements IProvento {
 
         List<LocalDate> feriadosDoMes = FeriadosNacionais.feriadosNoMes(mesReferencia.atDay(1));
 
-        for(int dia = 1; dia < diasDoMes; dia++){
+        for(int dia = 1; dia <= diasDoMes; dia++){
             LocalDate dataAtual = mesReferencia.atDay(dia);
             DayOfWeek diaDaSemana = dataAtual.getDayOfWeek();
 

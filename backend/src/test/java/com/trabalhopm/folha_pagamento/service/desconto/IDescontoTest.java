@@ -1,17 +1,34 @@
 package com.trabalhopm.folha_pagamento.service.desconto;
 
+import com.trabalhopm.folha_pagamento.domain.Financeiro;
+import com.trabalhopm.folha_pagamento.domain.Funcionario;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import java.math.BigDecimal;
-import static org.junit.jupiter.api.Assertions.*;
 
-class IDescontoTest {
+import java.math.BigDecimal;
+import java.time.YearMonth;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class IDescontoTest {
+    Funcionario funcionario;
+
+    @BeforeEach
+    void setUp() {
+        Financeiro financeiro = new Financeiro(BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.valueOf(11));
+        funcionario = new Funcionario();
+
+        funcionario.setFinanceiro(financeiro);
+    }
+
 
     @Test
     void deveCalcularINSSFaixa1() throws Exception {
         IDesconto inss = new INSS();
-        BigDecimal salario = new BigDecimal("1200.00");
-        BigDecimal esperado = salario.multiply(new BigDecimal("0.075"));
-        BigDecimal resultado = inss.calcular(salario);
+        funcionario.getFinanceiro().setSalarioBruto(BigDecimal.valueOf(1200));
+        BigDecimal esperado = funcionario.getFinanceiro().getSalarioBruto().multiply(new BigDecimal("0.075"));
+        BigDecimal resultado = inss.calcular(funcionario, null);
         assertEquals(0, esperado.compareTo(resultado),
                 "INSS faixa 1 incorreto");
     }
@@ -19,9 +36,9 @@ class IDescontoTest {
     @Test
     void deveCalcularINSSFaixa2() throws Exception {
         IDesconto inss = new INSS();
-        BigDecimal salario = new BigDecimal("2000.00");
-        BigDecimal esperado = salario.multiply(new BigDecimal("0.09"));
-        BigDecimal resultado = inss.calcular(salario);
+        funcionario.getFinanceiro().setSalarioBruto(BigDecimal.valueOf(2000));
+        BigDecimal esperado = funcionario.getFinanceiro().getSalarioBruto().multiply(new BigDecimal("0.09"));
+        BigDecimal resultado = inss.calcular(funcionario, null);
         assertEquals(0, esperado.compareTo(resultado),
                 "INSS faixa 2 incorreto");
     }
@@ -29,9 +46,9 @@ class IDescontoTest {
     @Test
     void deveCalcularINSSFaixa3() throws Exception {
         IDesconto inss = new INSS();
-        BigDecimal salario = new BigDecimal("4000.00");
-        BigDecimal esperado = salario.multiply(new BigDecimal("0.14"));
-        BigDecimal resultado = inss.calcular(salario);
+        funcionario.getFinanceiro().setSalarioBruto(BigDecimal.valueOf(4000));
+        BigDecimal esperado = funcionario.getFinanceiro().getSalarioBruto().multiply(new BigDecimal("0.14"));
+        BigDecimal resultado = inss.calcular(funcionario, null);
         assertEquals(0, esperado.compareTo(resultado),
                 "INSS faixa 3 incorreto");
     }
@@ -39,9 +56,9 @@ class IDescontoTest {
     @Test
     void deveCalcularIRRFFaixa1() throws Exception {
         IDesconto irrf = new IRRF();
-        BigDecimal salario = new BigDecimal("2000.00");
-        BigDecimal esperado = salario.multiply(BigDecimal.ZERO);
-        BigDecimal resultado = irrf.calcular(salario);
+        funcionario.getFinanceiro().setSalarioBruto(BigDecimal.valueOf(2000));
+        BigDecimal esperado = funcionario.getFinanceiro().getSalarioBruto().multiply(BigDecimal.ZERO);
+        BigDecimal resultado = irrf.calcular(funcionario, null);
         assertEquals(0, esperado.compareTo(resultado),
                 "IRRF faixa 1 incorreto");
     }
@@ -49,9 +66,9 @@ class IDescontoTest {
     @Test
     void deveCalcularIRRFFaixa2() throws Exception {
         IDesconto irrf = new IRRF();
-        BigDecimal salario = new BigDecimal("3000.00");
-        BigDecimal esperado = salario.multiply(new BigDecimal("0.15"));
-        BigDecimal resultado = irrf.calcular(salario);
+        funcionario.getFinanceiro().setSalarioBruto(BigDecimal.valueOf(3000));
+        BigDecimal esperado = funcionario.getFinanceiro().getSalarioBruto().multiply(new BigDecimal("0.15"));
+        BigDecimal resultado = irrf.calcular(funcionario, null);
         assertEquals(0, esperado.compareTo(resultado),
                 "IRRF faixa 2 incorreto");
     }
@@ -59,20 +76,48 @@ class IDescontoTest {
     @Test
     void deveCalcularIRRFFaixa3() throws Exception {
         IDesconto irrf = new IRRF();
-        BigDecimal salario = new BigDecimal("4000.00");
-        BigDecimal esperado = salario.multiply(new BigDecimal("0.225"));
-        BigDecimal resultado = irrf.calcular(salario);
+        funcionario.getFinanceiro().setSalarioBruto(BigDecimal.valueOf(4000));
+        BigDecimal esperado = funcionario.getFinanceiro().getSalarioBruto().multiply(new BigDecimal("0.225"));
+        BigDecimal resultado = irrf.calcular(funcionario, null);
         assertEquals(0, esperado.compareTo(resultado),
                 "IRRF faixa 3 incorreto");
     }
 
     @Test
-    void deveCalcularValeTransporteCorretamente() throws Exception {
+    @DisplayName("VT: Calcula o desconto limitado ao teto de 6% do salário")
+    void testeCalculoVT_Teto() throws Exception {
         IDesconto vt = new ValeTransporte();
         BigDecimal salario = new BigDecimal("2500.00");
+        BigDecimal valorDiario = new BigDecimal("15.00");
+        YearMonth mesReferencia = YearMonth.of(2025, 10);
+
+        funcionario.getFinanceiro().setSalarioBruto(salario);
+        funcionario.getFinanceiro().setValorDiarioValeTransporte(valorDiario);
+
         BigDecimal esperado = salario.multiply(new BigDecimal("0.06"));
-        BigDecimal resultado = vt.calcular(salario);
+
+        BigDecimal resultado = vt.calcular(funcionario, mesReferencia);
+
         assertEquals(0, esperado.compareTo(resultado),
-                "Vale transporte incorreto");
+                "O desconto do VT deveria ser o teto de 6% do salário.");
+    }
+
+    @Test
+    @DisplayName("VT: Calcula o desconto com base no custo real do benefício")
+    void testeCalculoVT_CustoReal() throws Exception {
+        IDesconto vt = new ValeTransporte();
+        BigDecimal salario = new BigDecimal("2500.00");
+        BigDecimal valorDiario = new BigDecimal("5.00");
+        YearMonth mesReferencia = YearMonth.of(2025, 10);
+
+        funcionario.getFinanceiro().setSalarioBruto(salario);
+        funcionario.getFinanceiro().setValorDiarioValeTransporte(valorDiario);
+
+        BigDecimal esperado = new BigDecimal("115.00");
+
+        BigDecimal resultado = vt.calcular(funcionario, mesReferencia);
+
+        assertEquals(0, esperado.compareTo(resultado),
+                "O desconto do VT deveria ser o custo real do benefício no mês.");
     }
 }

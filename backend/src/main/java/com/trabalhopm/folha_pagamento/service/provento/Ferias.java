@@ -14,7 +14,7 @@ public class Ferias implements IProvento {
     @Override
     public BigDecimal calcular(Funcionario funcionario, YearMonth mesReferencia) {
         BigDecimal tercoConstitucional = funcionario.getFinanceiro().getSalarioBruto().multiply(UM_TERCO);
-        return funcionario.getFinanceiro().getSalarioBruto().add(tercoConstitucional).setScale(2, RoundingMode.HALF_UP);
+        return tercoConstitucional.setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override

@@ -17,10 +17,10 @@ public class ValeAlimentacaoTest {
     Funcionario funcionario = null;
 
     @Test
-    @DisplayName("Mes com 22 dias uteis")
+    @DisplayName("Mes com 23 dias uteis")
     public void calculoValeAlimentacaoTest() throws Exception {
         YearMonth yearMonth = YearMonth.of(2025,10);
-        int diasUteis = 22;
+        int diasUteis = 23;
 
         BigDecimal valorAlimentacao = VALOR_DIARIO.multiply(new BigDecimal(diasUteis));
         assertEquals(valorAlimentacao, valeAlimentacao.calcular(null, yearMonth));

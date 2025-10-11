@@ -1,5 +1,6 @@
 package com.trabalhopm.folha_pagamento.service.desconto;
 
+import com.trabalhopm.folha_pagamento.service.CalculadoraSalario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;

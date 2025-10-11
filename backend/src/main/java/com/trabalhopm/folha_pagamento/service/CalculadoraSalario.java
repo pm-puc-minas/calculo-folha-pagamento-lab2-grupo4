@@ -1,5 +1,7 @@
-package com.trabalhopm.folha_pagamento.service.desconto;
+package com.trabalhopm.folha_pagamento.service;
 
+
+import com.trabalhopm.folha_pagamento.service.desconto.IDesconto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,13 +17,10 @@ public class CalculadoraSalario {
     public BigDecimal calcularSalarioLiquido(BigDecimal salarioBruto) throws Exception {
         BigDecimal totalDescontos = BigDecimal.ZERO;
 
-        System.out.println("=== Relatório de Descontos ===");
         for (IDesconto d : descontos) {
-            BigDecimal valorDesconto = d.calcular(salarioBruto);
-            System.out.println(d.getNome() + ": R$ " + valorDesconto);
-            totalDescontos = totalDescontos.add(valorDesconto);
+            //BigDecimal valorDesconto = d.calcular(salarioBruto);
+            //totalDescontos = totalDescontos.add(valorDesconto);
         }
-        System.out.println("Total de Descontos: R$ " + totalDescontos);
 
         return salarioBruto.subtract(totalDescontos);
     }

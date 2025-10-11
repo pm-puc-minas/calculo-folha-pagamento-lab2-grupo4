@@ -1,7 +1,10 @@
 package com.trabalhopm.folha_pagamento.service.desconto;
 
 
+import com.trabalhopm.folha_pagamento.domain.Funcionario;
+
 import java.math.BigDecimal;
+import java.time.YearMonth;
 
 public class IRRF implements IDesconto {
     private static final BigDecimal FAIXA1 = new BigDecimal("2259.20");
@@ -12,7 +15,9 @@ public class IRRF implements IDesconto {
     private static final BigDecimal TAXA3 = new BigDecimal("0.225");
 
     @Override
-    public BigDecimal calcular(BigDecimal valor) {
+    public BigDecimal calcular(Funcionario funcionario, YearMonth mesReferencia) {
+        BigDecimal valor = funcionario.getFinanceiro().getSalarioBruto();
+
         if (valor.compareTo(FAIXA1) <= 0) return valor.multiply(TAXA1);
         else if (valor.compareTo(FAIXA2) <= 0) return valor.multiply(TAXA2);
         else return valor.multiply(TAXA3);
