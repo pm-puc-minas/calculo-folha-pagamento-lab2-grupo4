@@ -98,6 +98,9 @@ public class FolhaPagamento {
             else if (nomeProvento.equals("ValeAlimentacao")) {
                 valeAlimentacao = valorProvento;
             }
+            else if (nomeProvento.equals("ValeTransporte")) {
+                valeTransporte =  valorProvento;
+            }
         }
 
         totalDescontos = BigDecimal.ZERO;
@@ -112,9 +115,6 @@ public class FolhaPagamento {
             }
             else if (nomeDesconto.equals("IRRF")) {
                 this.setValorIRRF(valorDesconto);
-            }
-            else if (nomeDesconto.equals("ValeTransporte")) {
-                this.setValeTransporte(valorDesconto);
             }
         }
 
