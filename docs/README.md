@@ -155,6 +155,88 @@ Eles ajudam a representar de forma simples e visual as principais responsabilida
 **Colaborações:**
 - Folha de Pagamento  
 - Funcionário  
-- Financeiro  
+- Financeiro 
+
+# ⚙️ Backend: Motor de Cálculo da Folha de Pagamento (Java/Spring Boot)
+
+Este é o módulo Backend do sistema de Folha de Pagamento. Ele é o coração da aplicação, responsável por implementar todas as **regras de negócio**, realizar os **cálculos complexos** de salários, impostos e benefícios, e gerenciar a **persistência de dados**.
+
+## 🚀 Arquitetura e Padrões de Design
+
+O Backend é construído com base em uma arquitetura limpa e modular (N-Tier), utilizando o framework Spring Boot para garantir a escalabilidade e a manutenibilidade do código.
+
+### 1. Estrutura de Camadas (N-Tier)
+
+O código é rigorosamente dividido em pacotes que representam as camadas da aplicação, seguindo o padrão MVC/Service:
+
+| Pacote | Camada | Responsabilidade |
+| :--- | :--- | :--- |
+| `controller` | Apresentação/API | Recebe requisições HTTP (REST), valida a entrada e delega para o `Service`. |
+| `service` | Regras de Negócio | Contém a lógica de cálculo da folha de pagamento, aplicação de regras de IRRF, INSS, e gestão de entidades. |
+| `repository` | Acesso a Dados (DAO) | Interage diretamente com o Banco de Dados (via Spring Data JPA) para operações CRUD. |
+| `model / entity` | Domínio | Classes que representam os objetos de negócio e o mapeamento para as tabelas do BD. |
+| `dto` | Transferência de Dados | Objetos usados para comunicação entre o `Controller` e o `Service`, garantindo a separação de responsabilidades. |
+
+### 2. Princípios de Orientação a Objetos
+
+O código segue os princípios **SOLID** para garantir um design robusto:
+
+* **Single Responsibility Principle (SRP):** Cada classe e método possui uma única responsabilidade.
+* **Dependency Inversion Principle (DIP):** Uso de interfaces no pacote `Service` (ex: `FolhaPagamentoService`) para desacoplar as implementações.
+* **Programação Orientada a Objetos (POO):** Uso extensivo de herança, encapsulamento e polimorfismo, especialmente no tratamento de diferentes tipos de funcionários ou regras de cálculo.
+
+## 📐 Modelo de Classes (Baseado em Diagramas UML)
+
+Com base nos requisitos de Folha de Pagamento, o modelo de domínio (classes no pacote `model/entity`) inclui as seguintes entidades chave, mapeadas para o banco de dados:
+
+| Entidade | Atributos Chave | Relacionamentos Principais |
+| :--- | :--- | :--- |
+| **Funcionario** | `id`, `nome`, `cpf`, `cargo`, `salarioBase` | **1:N** com `RegistroPonto`, **1:N** com `FolhaPagamento` |
+| **FolhaPagamento** | `id`, `mes`, `ano`, `salarioBruto`, `totalDescontos`, `salarioLiquido` | **N:1** com `Funcionario`, **1:N** com `ItemDesconto` |
+| **ItemDesconto** | `id`, `tipo` (`INSS`, `IRRF`, `ValeTransporte`), `valor` | **N:1** com `FolhaPagamento` |
+| **RegistroPonto** | `id`, `data`, `entrada`, `saida`, `horasExtras` | **N:1** com `Funcionario` |
+| **TabelaINSS / TabelaIRRF** | `faixaInicial`, `faixaFinal`, `aliquota`, `deducao` | Estruturas estáticas usadas pelo `Service` para o cálculo. |
+
+## 🔗 Interfaces e Comunicação (Endpoints REST)
+
+O Backend expõe uma API RESTful para comunicação com o Frontend e outros sistemas, utilizando o padrão **JSON** para troca de dados.
+
+### 1. Módulo de Funcionários (`/api/v1/funcionarios`)
+
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `GET` | `/` | Lista todos os funcionários registrados. |
+| `GET` | `/{id}` | Busca os dados de um funcionário específico. |
+| `POST` | `/` | Cadastra um novo funcionário no sistema. |
+| `PUT` | `/{id}` | Atualiza os dados de um funcionário existente. |
+
+### 2. Módulo de Cálculo da Folha (`/api/v1/folha`)
+
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `POST` | `/processar/{mes}/{ano}` | **Gera a folha de pagamento** para todos os funcionários em um determinado mês/ano. |
+| `GET` | `/funcionario/{idFuncionario}/{mes}/{ano}` | Busca o detalhe da folha de pagamento de um funcionário para um período. |
+| `GET` | `/relatorio/{mes}/{ano}` | Gera um relatório consolidado da folha de pagamento do período. |
+
+## 🛠️ Configuração e Dependências
+
+### Dependências Principais (via `pom.xml` - Maven)
+
+* `spring-boot-starter-web`: Suporte a RESTful APIs.
+* `spring-boot-starter-data-jpa`: Persistência de dados e mapeamento ORM (Hibernate).
+* `(driver-do-banco)`: Ex: `postgresql` ou `mysql-connector-java`.
+* `spring-boot-starter-test`: Módulos de teste (JUnit 5, Mockito).
+
+### Configuração do Banco de Dados
+
+As configurações de conexão (URL, usuário e senha) são definidas no arquivo `application.properties` ou `application.yml`.
+
+**Exemplo de Configuração (PostgreSQL):**
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/folha_db
+spring.datasource.username=user
+spring.datasource.password=password
+spring.jpa.hibernate.ddl-auto=update # Ou create-drop para desenvolvimento
 
 ---
