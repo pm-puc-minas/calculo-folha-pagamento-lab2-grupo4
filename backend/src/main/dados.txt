@@ -1,3 +1,0 @@
-Nome;CPF;Cargo;DataAdmissao;Dependentes;Insalubridade;Periculosidade;SalarioBruto;HorasDia;DiasSemana;ValeTransporteDia;ValeAlimentacaoDia
-João da Silva;12345678900;Analista;2022-01-15;2;20;true;3000.00;8;5;10.00;20.00
-Maria Oliveira;98765432100;Gerente;2021-03-10;0;0;false;5000.00;8;5;12.00;25.00
