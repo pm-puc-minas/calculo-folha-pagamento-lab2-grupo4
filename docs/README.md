@@ -152,3 +152,45 @@ Eles ajudam a representar de forma simples e visual as principais responsabilida
 **Colaborações:**
 - Folha de Pagamento  
 - Funcionário  
+A lógica de cálculo segue os princípios **SOLID** para maximizar a flexibilidade, especialmente no tratamento de regras fiscais variáveis:
+
+* **SRP (Responsabilidade Única):** O `Cálculo Financeiro Service` apenas orquestra; as classes de `Provento` e `Desconto` (Ex: `InssCalculation.java`) são responsáveis por sua própria regra específica de cálculo.
+* **OCP (Aberto/Fechado):** O sistema deve ser aberto à extensão, mas fechado à modificação. Novas regras fiscais ou benefícios são adicionadas implementando as interfaces `Provento` ou `Desconto`, sem alterar o código do `FolhaPagamentoService`.
+* **DIP (Inversão de Dependência):** O `Service` depende de abstrações (Interfaces `Provento` e `Desconto`), não de implementações concretas, permitindo fácil substituição.
+
+### 3. Validação e Tipagem em Java
+Utilizamos técnicas específicas de Java para garantir a integridade dos dados:
+
+| Conceito | Aplicação no Projeto | Dependência |
+| :--- | :--- | :--- |
+| **Validation** | Utilização da especificação Bean Validation (JSR 380) para garantir que os dados de entrada (DTOs) e entidades sejam válidos (Ex: `@NotNull`, `@CPF`). | `spring-boot-starter-validation` |
+| **Unboxing** | Uso de classes *Wrapper* (`Double`, `Integer`, `BigDecimal`) em vez de tipos primitivos nos modelos de dados. Isso permite valores `null` no banco de dados e maior robustez em operações financeiras de alta precisão. | Padrão Java |
+
+### 4. Dependências (Maven - `pom.xml`)
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
