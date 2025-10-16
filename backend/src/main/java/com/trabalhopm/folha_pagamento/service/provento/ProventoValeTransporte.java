@@ -1,9 +1,10 @@
-package com.trabalhopm.folha_pagamento.service.desconto;
+package com.trabalhopm.folha_pagamento.service.provento;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
+import com.trabalhopm.folha_pagamento.service.desconto.ValeTransporte;
 import com.trabalhopm.folha_pagamento.service.provento.Provento;
 
 public class ProventoValeTransporte implements Provento {
