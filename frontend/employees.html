@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funcionários - Sistema de Folha de Pagamento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#10b981',
+            'primary-dark': '#059669',
+            background: '#ffffff',
+            foreground: '#0f172a',
+            muted: '#f1f5f9',
+            'muted-foreground': '#64748b',
+            border: '#e2e8f0',
+            accent: '#3b82f6',
+            destructive: '#ef4444'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-muted">
+  <!-- Header -->
+  <header class="bg-background border-b border-border sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-foreground">Folha de Pagamento</h1>
+            <p class="text-xs text-muted-foreground">Sistema de Gestão</p>
+          </div>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="dashboard.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Dashboard</a>
+          <a href="employees.html" class="text-sm font-medium text-primary">Funcionários</a>
+          <a href="payroll.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Folha de Pagamento</a>
+          <a href="reports.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Relatórios</a>
+        </nav>
+
+        <div class="flex items-center gap-4">
+          <button class="text-muted-foreground hover:text-foreground">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+          </button>
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">A</div>
+            <span class="text-sm font-medium text-foreground hidden sm:block">Admin</span>
+          </div>
+          <button onclick="logout()" class="text-sm text-muted-foreground hover:text-destructive">Sair</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-3xl font-bold text-foreground mb-2">Funcionários</h2>
+        <p class="text-muted-foreground">Gerencie os funcionários da empresa</p>
+      </div>
+      <a href="employees-new.html" class="bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-lg transition-colors inline-flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Novo Funcionário
+      </a>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="bg-background rounded-xl border border-border p-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-2">Buscar</label>
+          <input 
+            type="text" 
+            placeholder="Nome, CPF ou matrícula..."
+            class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-2">Departamento</label>
+          <select class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            <option>Todos</option>
+            <option>Tecnologia</option>
+            <option>Recursos Humanos</option>
+            <option>Financeiro</option>
+            <option>Vendas</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-2">Status</label>
+          <select class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            <option>Todos</option>
+            <option>Ativo</option>
+            <option>Inativo</option>
+            <option>Férias</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employees Table -->
+    <div class="bg-background rounded-xl border border-border overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-muted">
+            <tr>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Funcionário</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Matrícula</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Departamento</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Cargo</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Salário</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Status</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-medium">JS</div>
+                  <div>
+                    <p class="text-sm font-medium text-foreground">João Silva</p>
+                    <p class="text-xs text-muted-foreground">joao.silva@empresa.com</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-sm text-foreground">001234</td>
+              <td class="py-3 px-4 text-sm text-foreground">Tecnologia</td>
+              <td class="py-3 px-4 text-sm text-foreground">Desenvolvedor Sênior</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 8.500,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Ativo</span>
+              </td>
+              <td class="py-3 px-4">
+                <button class="text-primary hover:text-primary-dark text-sm font-medium">Editar</button>
+              </td>
+            </tr>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white font-medium">MS</div>
+                  <div>
+                    <p class="text-sm font-medium text-foreground">Maria Santos</p>
+                    <p class="text-xs text-muted-foreground">maria.santos@empresa.com</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-sm text-foreground">001235</td>
+              <td class="py-3 px-4 text-sm text-foreground">Recursos Humanos</td>
+              <td class="py-3 px-4 text-sm text-foreground">Gerente de RH</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 9.200,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Ativo</span>
+              </td>
+              <td class="py-3 px-4">
+                <button class="text-primary hover:text-primary-dark text-sm font-medium">Editar</button>
+              </td>
+            </tr>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-medium">PC</div>
+                  <div>
+                    <p class="text-sm font-medium text-foreground">Pedro Costa</p>
+                    <p class="text-xs text-muted-foreground">pedro.costa@empresa.com</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-sm text-foreground">001236</td>
+              <td class="py-3 px-4 text-sm text-foreground">Financeiro</td>
+              <td class="py-3 px-4 text-sm text-foreground">Analista Financeiro</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 5.800,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Ativo</span>
+              </td>
+              <td class="py-3 px-4">
+                <button class="text-primary hover:text-primary-dark text-sm font-medium">Editar</button>
+              </td>
+            </tr>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-medium">AL</div>
+                  <div>
+                    <p class="text-sm font-medium text-foreground">Ana Lima</p>
+                    <p class="text-xs text-muted-foreground">ana.lima@empresa.com</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-sm text-foreground">001237</td>
+              <td class="py-3 px-4 text-sm text-foreground">Vendas</td>
+              <td class="py-3 px-4 text-sm text-foreground">Executiva de Vendas</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 4.500,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Férias</span>
+              </td>
+              <td class="py-3 px-4">
+                <button class="text-primary hover:text-primary-dark text-sm font-medium">Editar</button>
+              </td>
+            </tr>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center text-white font-medium">CF</div>
+                  <div>
+                    <p class="text-sm font-medium text-foreground">Carlos Ferreira</p>
+                    <p class="text-xs text-muted-foreground">carlos.ferreira@empresa.com</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-sm text-foreground">001238</td>
+              <td class="py-3 px-4 text-sm text-foreground">Tecnologia</td>
+              <td class="py-3 px-4 text-sm text-foreground">Designer UX/UI</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 6.200,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Ativo</span>
+              </td>
+              <td class="py-3 px-4">
+                <button class="text-primary hover:text-primary-dark text-sm font-medium">Editar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between px-6 py-4 border-t border-border">
+        <p class="text-sm text-muted-foreground">Mostrando 1-5 de 156 funcionários</p>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1 border border-border rounded-lg text-sm text-muted-foreground hover:bg-muted">Anterior</button>
+          <button class="px-3 py-1 bg-primary text-white rounded-lg text-sm">1</button>
+          <button class="px-3 py-1 border border-border rounded-lg text-sm text-muted-foreground hover:bg-muted">2</button>
+          <button class="px-3 py-1 border border-border rounded-lg text-sm text-muted-foreground hover:bg-muted">3</button>
+          <button class="px-3 py-1 border border-border rounded-lg text-sm text-muted-foreground hover:bg-muted">Próximo</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    if (!localStorage.getItem('isAuthenticated')) {
+      window.location.href = 'login.html';
+    }
+
+    function logout() {
+      localStorage.removeItem('isAuthenticated');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
