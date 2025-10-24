@@ -16,7 +16,10 @@ public class IDescontoTest {
 
     @BeforeEach
     void setUp() {
-        Financeiro financeiro = new Financeiro(BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.valueOf(11));
+        Financeiro financeiro = new Financeiro();
+        financeiro.setHorasTrabalhadasDia(8);
+        financeiro.setValorDiarioValeTransporte(BigDecimal.valueOf(11));
+        financeiro.setSalarioBruto(BigDecimal.ZERO);
         funcionario = new Funcionario();
 
         funcionario.setFinanceiro(financeiro);

@@ -1,7 +1,8 @@
-package com.trabalhopm.folha_pagamento.service.provento;
+package com.trabalhopm.folha_pagamento.service.proventos;
 
 import com.trabalhopm.folha_pagamento.domain.Financeiro;
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
+import com.trabalhopm.folha_pagamento.service.provento.Ferias;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class FeriasTest {
         ferias = new Ferias();
         funcionario = new Funcionario();
         // Configuração de um Financeiro base (o salário bruto será alterado em cada teste)
-        funcionario.setFinanceiro(new Financeiro(BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.ZERO));
+        funcionario.setFinanceiro(new Financeiro(null, BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.ZERO, funcionario));
     }
 
     @Test

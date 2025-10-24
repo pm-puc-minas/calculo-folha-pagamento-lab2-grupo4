@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.trabalhopm.folha_pagamento.domain.enums.NivelInsalubridade;
 import com.trabalhopm.folha_pagamento.utils.ValidaCPF;
 import jakarta.persistence.*;
@@ -53,8 +54,8 @@ public class Funcionario implements Serializable {
     @Column(name = "ta_de_ferias")
     private boolean deFerias;
 
-    @OneToOne
-    @JoinColumn(name = "financeiro_id")
+    @OneToOne(mappedBy = "funcionario", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Financeiro financeiro;
 
     public void setCPF(String cpf) {

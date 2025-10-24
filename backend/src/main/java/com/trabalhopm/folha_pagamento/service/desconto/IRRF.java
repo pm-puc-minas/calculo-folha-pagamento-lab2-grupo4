@@ -2,10 +2,12 @@ package com.trabalhopm.folha_pagamento.service.desconto;
 
 
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
 
+@Component
 public class IRRF implements IDesconto {
     private static final BigDecimal FAIXA1 = new BigDecimal("2259.20");
     private static final BigDecimal FAIXA2 = new BigDecimal("3451.05");

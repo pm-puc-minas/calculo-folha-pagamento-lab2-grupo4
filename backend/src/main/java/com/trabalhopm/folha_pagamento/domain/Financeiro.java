@@ -1,4 +1,5 @@
 package com.trabalhopm.folha_pagamento.domain;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Financeiro implements Serializable {
     
     @NotNull(message = "O salário bruto não pode ser nulo")
     @PositiveOrZero(message = "O salário bruto deve ser maior que zero")
-    @Column(name = "'salario_bruto")
+    @Column(name = "salario_bruto")
     private BigDecimal salarioBruto;
 
     @PositiveOrZero(message = "As horas trabalhadas por dia devem ser maiores que zero")
@@ -46,6 +47,7 @@ public class Financeiro implements Serializable {
     private BigDecimal valorDiarioValeTransporte;
 
     @OneToOne
-    @JoinColumn(name = "funcionario_id")
+    @JoinColumn(name = "funcionario_id", unique = true)
+    @JsonBackReference
     private Funcionario funcionario;
 }

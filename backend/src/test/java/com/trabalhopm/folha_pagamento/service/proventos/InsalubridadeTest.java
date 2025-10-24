@@ -1,8 +1,9 @@
-package com.trabalhopm.folha_pagamento.service.provento;
+package com.trabalhopm.folha_pagamento.service.proventos;
 
 import com.trabalhopm.folha_pagamento.domain.Financeiro;
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import com.trabalhopm.folha_pagamento.domain.enums.NivelInsalubridade;
+import com.trabalhopm.folha_pagamento.service.provento.Insalubridade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ public class InsalubridadeTest {
         funcionario = new Funcionario();
         // Um objeto Financeiro é necessário, mesmo que o salário bruto não seja usado diretamente
         // no cálculo de Insalubridade, mas é uma dependência da classe Funcionario.
-        funcionario.setFinanceiro(new Financeiro(new BigDecimal("2000.00"), 8.0, (byte) 5, BigDecimal.ZERO));
+        funcionario.setFinanceiro(new Financeiro(null, new BigDecimal("2000.00"), 8.0, (byte) 5, BigDecimal.ZERO, funcionario));
     }
 
     @Test

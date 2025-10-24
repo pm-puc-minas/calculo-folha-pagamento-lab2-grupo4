@@ -2,6 +2,7 @@ package com.trabalhopm.folha_pagamento.service.desconto;
 
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import com.trabalhopm.folha_pagamento.utils.Feriado.FeriadosNacionais;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+@Component
 public class ValeTransporte implements IDesconto {
 
     private static final BigDecimal TAXA_SALARIAL = new BigDecimal("0.06");

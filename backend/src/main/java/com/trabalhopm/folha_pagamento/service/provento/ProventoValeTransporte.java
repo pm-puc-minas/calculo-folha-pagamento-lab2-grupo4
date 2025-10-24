@@ -2,17 +2,19 @@ package com.trabalhopm.folha_pagamento.service.provento;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.YearMonth;
 
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import com.trabalhopm.folha_pagamento.service.desconto.ValeTransporte;
-import com.trabalhopm.folha_pagamento.service.provento.Provento;
+import org.springframework.stereotype.Component;
 
-public class ProventoValeTransporte implements Provento {
+@Component
+public class ProventoValeTransporte implements IProvento {
 
     private BigDecimal valorProvento = BigDecimal.ZERO; 
 
     @Override
-    public BigDecimal calcular(Funcionario funcionario) {
+    public BigDecimal calcular(Funcionario funcionario, YearMonth mesReferencia) throws Exception {
         
         
         BigDecimal custoTotalVT = getCustoTotalVT(
@@ -22,7 +24,7 @@ public class ProventoValeTransporte implements Provento {
         
         
         ValeTransporte calculoDescontoVT = new ValeTransporte();
-        BigDecimal descontoFuncionario = calculoDescontoVT.calcular(funcionario.getFinanceiro().getSalarioBruto());
+        BigDecimal descontoFuncionario = calculoDescontoVT.calcular(funcionario, mesReferencia);
         
         
         BigDecimal proventoEmpresa = custoTotalVT.subtract(descontoFuncionario);
@@ -42,12 +44,5 @@ public class ProventoValeTransporte implements Provento {
     @Override
     public String getNome() {
         return "Provento Vale-Transporte (Custo Empresa)";
-    }
-    
-  
-    @Override
-    public BigDecimal getValor() {
-        return this.valorProvento;   
-
     }
 }
