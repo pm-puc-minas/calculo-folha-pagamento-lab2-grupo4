@@ -6,6 +6,7 @@ import com.trabalhopm.folha_pagamento.repository.FolhaPagamentoRepository;
 import com.trabalhopm.folha_pagamento.service.desconto.IDesconto;
 import com.trabalhopm.folha_pagamento.service.encargoSocial.IEncargoSocial;
 import com.trabalhopm.folha_pagamento.service.provento.IProvento;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -125,5 +126,18 @@ public class FolhaPagamentoService {
     public FolhaPagamento findByFuncionarioAndPeriodo(Funcionario funcionario, YearMonth periodo) throws Exception {
         Optional<FolhaPagamento> obj = folhaPagamentoRepository.findByFuncionarioAndPeriodo(funcionario, periodo);
         return obj.get();
+    }
+
+    public List<FolhaPagamento> findAllByFuncionario(Funcionario funcionario) {
+        return folhaPagamentoRepository.findAllByFuncionario(funcionario);
+    }
+
+    public List<FolhaPagamento> findAll(){
+        return folhaPagamentoRepository.findAll();
+    }
+
+    public FolhaPagamento findById(Long id){
+        Optional<FolhaPagamento> obj = folhaPagamentoRepository.findById(id);
+        return obj.orElseThrow(EntityNotFoundException::new);
     }
 }

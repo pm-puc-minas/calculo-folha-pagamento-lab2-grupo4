@@ -28,11 +28,12 @@ public class FolhaPagamento implements Serializable {
     private Long id;
 
     @NotNull(message = "O funcionário não pode ser nulo")
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "funcionario_id")
     private Funcionario funcionario;
 
     @NotNull(message = "O período da folha não pode ser nulo")
+    @Column(columnDefinition = "DATE")
     private YearMonth periodo;
 
     @PositiveOrZero(message = "O valor do salário/hora não pode ser negativo")

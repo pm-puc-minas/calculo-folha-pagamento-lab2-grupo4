@@ -2,6 +2,7 @@ package com.trabalhopm.folha_pagamento.service;
 
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import com.trabalhopm.folha_pagamento.repository.FuncionarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,6 @@ public class FuncionarioService {
 
     public Funcionario findById(Long id){
         Optional<Funcionario> obj = funcionarioRepository.findById(id);
-        return obj.orElseThrow(RuntimeException::new);
+        return obj.orElseThrow(EntityNotFoundException::new);
     }
 }
