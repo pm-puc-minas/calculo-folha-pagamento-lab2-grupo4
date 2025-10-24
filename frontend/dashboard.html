@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Sistema de Folha de Pagamento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#10b981',
+            'primary-dark': '#059669',
+            background: '#ffffff',
+            foreground: '#0f172a',
+            muted: '#f1f5f9',
+            'muted-foreground': '#64748b',
+            border: '#e2e8f0',
+            accent: '#3b82f6',
+            destructive: '#ef4444'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-muted">
+  <!-- Header -->
+  <header class="bg-background border-b border-border sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-foreground">Folha de Pagamento</h1>
+            <p class="text-xs text-muted-foreground">Sistema de Gestão</p>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="dashboard.html" class="text-sm font-medium text-primary">Dashboard</a>
+          <a href="employees.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Funcionários</a>
+          <a href="payroll.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Folha de Pagamento</a>
+          <a href="reports.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Relatórios</a>
+        </nav>
+
+        <!-- User Menu -->
+        <div class="flex items-center gap-4">
+          <button class="text-muted-foreground hover:text-foreground">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+          </button>
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+              A
+            </div>
+            <span class="text-sm font-medium text-foreground hidden sm:block">Admin</span>
+          </div>
+          <button onclick="logout()" class="text-sm text-muted-foreground hover:text-destructive">
+            Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-foreground mb-2">Dashboard</h2>
+      <p class="text-muted-foreground">Visão geral do sistema de folha de pagamento</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Funcionários -->
+      <div class="bg-background rounded-xl border border-border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded">+12%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-foreground mb-1">156</h3>
+        <p class="text-sm text-muted-foreground">Total de Funcionários</p>
+      </div>
+
+      <!-- Folha do Mês -->
+      <div class="bg-background rounded-xl border border-border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded">+5%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-foreground mb-1">R$ 487.500</h3>
+        <p class="text-sm text-muted-foreground">Folha do Mês Atual</p>
+      </div>
+
+      <!-- Média Salarial -->
+      <div class="bg-background rounded-xl border border-border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded">+3%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-foreground mb-1">R$ 3.125</h3>
+        <p class="text-sm text-muted-foreground">Média Salarial</p>
+      </div>
+
+      <!-- Descontos Totais -->
+      <div class="bg-background rounded-xl border border-border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-1 rounded">+2%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-foreground mb-1">R$ 97.500</h3>
+        <p class="text-sm text-muted-foreground">Descontos Totais</p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-background rounded-xl border border-border p-6 mb-8">
+      <h3 class="text-lg font-semibold text-foreground mb-4">Ações Rápidas</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="employees-new.html" class="flex items-center gap-3 p-4 border border-border rounded-lg hover:border-primary hover:bg-muted transition-colors">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-foreground text-sm">Novo Funcionário</p>
+            <p class="text-xs text-muted-foreground">Cadastrar</p>
+          </div>
+        </a>
+
+        <a href="payroll-calculate.html" class="flex items-center gap-3 p-4 border border-border rounded-lg hover:border-primary hover:bg-muted transition-colors">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-foreground text-sm">Calcular Folha</p>
+            <p class="text-xs text-muted-foreground">Processar</p>
+          </div>
+        </a>
+
+        <a href="employees.html" class="flex items-center gap-3 p-4 border border-border rounded-lg hover:border-primary hover:bg-muted transition-colors">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-foreground text-sm">Ver Funcionários</p>
+            <p class="text-xs text-muted-foreground">Listar</p>
+          </div>
+        </a>
+
+        <a href="reports.html" class="flex items-center gap-3 p-4 border border-border rounded-lg hover:border-primary hover:bg-muted transition-colors">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-foreground text-sm">Relatórios</p>
+            <p class="text-xs text-muted-foreground">Visualizar</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Payrolls -->
+    <div class="bg-background rounded-xl border border-border p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-foreground">Folhas Recentes</h3>
+        <a href="payroll.html" class="text-sm text-primary hover:text-primary-dark font-medium">Ver todas</a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-border">
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Período</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Funcionários</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Total Bruto</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Descontos</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Total Líquido</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4 text-sm text-foreground">Janeiro 2024</td>
+              <td class="py-3 px-4 text-sm text-foreground">156</td>
+              <td class="py-3 px-4 text-sm text-foreground">R$ 487.500,00</td>
+              <td class="py-3 px-4 text-sm text-foreground">R$ 97.500,00</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 390.000,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                  Processada
+                </span>
+              </td>
+            </tr>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4 text-sm text-foreground">Dezembro 2023</td>
+              <td class="py-3 px-4 text-sm text-foreground">152</td>
+              <td class="py-3 px-4 text-sm text-foreground">R$ 464.000,00</td>
+              <td class="py-3 px-4 text-sm text-foreground">R$ 92.800,00</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 371.200,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                  Processada
+                </span>
+              </td>
+            </tr>
+            <tr class="border-b border-border hover:bg-muted">
+              <td class="py-3 px-4 text-sm text-foreground">Novembro 2023</td>
+              <td class="py-3 px-4 text-sm text-foreground">148</td>
+              <td class="py-3 px-4 text-sm text-foreground">R$ 451.000,00</td>
+              <td class="py-3 px-4 text-sm text-foreground">R$ 90.200,00</td>
+              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 360.800,00</td>
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                  Processada
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Verificar autenticação
+    if (!localStorage.getItem('isAuthenticated')) {
+      window.location.href = 'login.html';
+    }
+
+    function logout() {
+      localStorage.removeItem('isAuthenticated');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
