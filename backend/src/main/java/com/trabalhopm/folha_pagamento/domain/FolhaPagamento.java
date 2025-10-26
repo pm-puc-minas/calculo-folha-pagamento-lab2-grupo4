@@ -78,7 +78,7 @@ public class FolhaPagamento implements Serializable {
 
     @PositiveOrZero(message = "O valor do Provento Vale Transporte não pode ser negativo")
     @Column(name = "valor_provento_VT")
-    private BigDecimal pronventoValeTransporte = BigDecimal.ZERO;
+    private BigDecimal proventoValeTransporte = BigDecimal.ZERO;
 
     @PositiveOrZero(message = "O valor do Vale Alimentacao não pode ser negativo")
     @Column(name = "valor_VA")

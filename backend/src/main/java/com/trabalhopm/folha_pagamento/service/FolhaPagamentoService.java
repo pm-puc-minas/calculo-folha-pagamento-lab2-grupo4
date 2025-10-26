@@ -69,7 +69,7 @@ public class FolhaPagamentoService {
         folhaPagamento.setSalarioFamilia(proventosCalculados.getOrDefault("SalarioFamilia", BigDecimal.ZERO));
         folhaPagamento.setAdicionalFerias(proventosCalculados.getOrDefault("Ferias", BigDecimal.ZERO));
         folhaPagamento.setValeAlimentacao(proventosCalculados.getOrDefault("ValeAlimentacao", BigDecimal.ZERO));
-        folhaPagamento.setPronventoValeTransporte(proventosCalculados.getOrDefault("ProventoValeTransporte", BigDecimal.ZERO));
+        folhaPagamento.setProventoValeTransporte(proventosCalculados.getOrDefault("ProventoValeTransporte", BigDecimal.ZERO));
         folhaPagamento.setInsalubridade(proventosCalculados.getOrDefault("Insalubridade", BigDecimal.ZERO));
         folhaPagamento.setPericulosidade(proventosCalculados.getOrDefault("Periculosidade", BigDecimal.ZERO));
 
