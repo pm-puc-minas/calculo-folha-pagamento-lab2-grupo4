@@ -3,16 +3,21 @@ package com.trabalhopm.folha_pagamento.controller;
 import com.trabalhopm.folha_pagamento.domain.Financeiro;
 import com.trabalhopm.folha_pagamento.domain.FolhaPagamento;
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
+
+import com.trabalhopm.folha_pagamento.dto.FuncionarioDTO;
+
 import com.trabalhopm.folha_pagamento.service.FolhaPagamentoService;
 import com.trabalhopm.folha_pagamento.service.FuncionarioService;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -25,6 +30,50 @@ public class FuncionarioController {
 
     @Autowired
     private FolhaPagamentoService folhaPagamentoService;
+
+    //CREATE
+
+    @PostMapping
+    public ResponseEntity<?> createFuncionario(@Valid @RequestBody FuncionarioDTO funcionarioDTO) {
+        try {
+            Funcionario novoFuncionario = funcionarioService.create(funcionarioDTO);
+
+            URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(novoFuncionario.getId())
+                    .toUri();
+
+            return ResponseEntity.created(uri).body(novoFuncionario);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno ao criar funcionário: " + e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/{id}/folhas/{periodo}") // Ex: POST /funcionarios/1/folhas/2025-10
+    public ResponseEntity<?> gerarFolhaPagamento(@PathVariable Long id, @PathVariable @DateTimeFormat(pattern="yyyy-MM") YearMonth periodo) {
+        try {
+            Funcionario funcionario = funcionarioService.findById(id);
+
+            FolhaPagamento folha = folhaPagamentoService.getFolha(funcionario, periodo);
+
+            URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/funcionarios/{id}/folhas/{periodo}")
+                    .buildAndExpand(id, periodo.toString())
+                    .toUri();
+
+            return ResponseEntity.ok().body(folha);
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).body("Funcionário não encontrado com ID: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao gerar folha de pagamento: " + e.getMessage());
+        }
+    }
+
+    // READ
 
     @GetMapping
     public ResponseEntity<List<Funcionario>> findAll(){
@@ -75,8 +124,7 @@ public class FuncionarioController {
     }
 
     @GetMapping(value = "/{id}/folhas/{periodo}") // Ex: /funcionarios/1/folhas/2025-10
-    public ResponseEntity<FolhaPagamento> getFolhaPagamentoPorPeriodo(@PathVariable Long id,
-            @PathVariable @DateTimeFormat(pattern="yyyy-MM") YearMonth periodo) {
+    public ResponseEntity<FolhaPagamento> getFolhaPagamentoPorPeriodo(@PathVariable Long id, @PathVariable @DateTimeFormat(pattern="yyyy-MM") YearMonth periodo) {
         try {
             Funcionario funcionario = funcionarioService.findById(id);
 
@@ -84,6 +132,23 @@ public class FuncionarioController {
             return ResponseEntity.ok().body(folha);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    // DELETE
+
+    @DeleteMapping(value = "/{id}/folhas/{periodo}")
+    public ResponseEntity<?> deleteFolhaPagamento(@PathVariable Long id, @PathVariable @DateTimeFormat(pattern="yyyy-MM") YearMonth periodo) {
+        try {
+            Funcionario funcionario = funcionarioService.findById(id);
+            folhaPagamentoService.deleteByFuncionarioAndPeriodo(funcionario, periodo);
+
+            return ResponseEntity.noContent().build();
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno ao deletar a folha de pagamento: " + e.getMessage());
         }
     }
 }

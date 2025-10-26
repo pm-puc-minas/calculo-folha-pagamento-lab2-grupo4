@@ -3,10 +3,13 @@ package com.trabalhopm.folha_pagamento.service;
 import com.trabalhopm.folha_pagamento.domain.FolhaPagamento;
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import com.trabalhopm.folha_pagamento.repository.FolhaPagamentoRepository;
+
 import com.trabalhopm.folha_pagamento.service.desconto.IDesconto;
 import com.trabalhopm.folha_pagamento.service.encargoSocial.IEncargoSocial;
 import com.trabalhopm.folha_pagamento.service.provento.IProvento;
+
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,7 @@ public class FolhaPagamentoService {
     @Autowired
     private List<IEncargoSocial> encargos;
 
+    @Transactional
     public FolhaPagamento getFolha(Funcionario funcionario, YearMonth periodo) throws Exception {
 
         Optional<FolhaPagamento> folhaExistente = folhaPagamentoRepository.findByFuncionarioAndPeriodo(funcionario, periodo);
@@ -55,13 +59,19 @@ public class FolhaPagamentoService {
         BigDecimal totalProventos = proventosCalculados.getOrDefault("total", BigDecimal.ZERO);
         BigDecimal totalDescontos = descontosCalculados.getOrDefault("total", BigDecimal.ZERO);
 
+        folhaPagamento.setTotalProventos(totalProventos);
+        folhaPagamento.setTotalDescontos(totalDescontos);
+
         folhaPagamento.setValorINSS(descontosCalculados.getOrDefault("INSS", BigDecimal.ZERO));
         folhaPagamento.setValorIRRF(descontosCalculados.getOrDefault("IRRF", BigDecimal.ZERO));
+        folhaPagamento.setDescontoValeTransporte(descontosCalculados.getOrDefault("DescontoValeTransporte", BigDecimal.ZERO));
 
         folhaPagamento.setSalarioFamilia(proventosCalculados.getOrDefault("SalarioFamilia", BigDecimal.ZERO));
         folhaPagamento.setAdicionalFerias(proventosCalculados.getOrDefault("Ferias", BigDecimal.ZERO));
         folhaPagamento.setValeAlimentacao(proventosCalculados.getOrDefault("ValeAlimentacao", BigDecimal.ZERO));
-        folhaPagamento.setValeTransporte(proventosCalculados.getOrDefault("ProventoValeTransporte", BigDecimal.ZERO));
+        folhaPagamento.setPronventoValeTransporte(proventosCalculados.getOrDefault("ProventoValeTransporte", BigDecimal.ZERO));
+        folhaPagamento.setInsalubridade(proventosCalculados.getOrDefault("Insalubridade", BigDecimal.ZERO));
+        folhaPagamento.setPericulosidade(proventosCalculados.getOrDefault("Periculosidade", BigDecimal.ZERO));
 
         folhaPagamento.setValorFGTS(encargosCalculados.getOrDefault("FGTS", BigDecimal.ZERO));
 
@@ -139,5 +149,13 @@ public class FolhaPagamentoService {
     public FolhaPagamento findById(Long id){
         Optional<FolhaPagamento> obj = folhaPagamentoRepository.findById(id);
         return obj.orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Transactional
+    public void deleteByFuncionarioAndPeriodo(Funcionario funcionario, YearMonth periodo) {
+        FolhaPagamento folha = folhaPagamentoRepository.findByFuncionarioAndPeriodo(funcionario, periodo)
+                .orElseThrow(() -> new EntityNotFoundException("Folha de pagamento não encontrada"));
+
+        folhaPagamentoRepository.deleteById(folha.getId());
     }
 }

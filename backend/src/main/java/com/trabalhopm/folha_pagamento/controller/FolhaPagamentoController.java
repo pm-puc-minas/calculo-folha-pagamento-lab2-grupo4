@@ -18,6 +18,8 @@ public class FolhaPagamentoController {
     @Autowired
     private FolhaPagamentoService folhaPagamentoService;
 
+    // READ
+
     @GetMapping
     public ResponseEntity<List<FolhaPagamento>> findAll(){
         try {

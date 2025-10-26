@@ -89,7 +89,7 @@ public class IDescontoTest {
     @Test
     @DisplayName("VT: Calcula o desconto limitado ao teto de 6% do salário")
     void testeCalculoVT_Teto() throws Exception {
-        IDesconto vt = new ValeTransporte();
+        IDesconto vt = new DescontoValeTransporte();
         BigDecimal salario = new BigDecimal("2500.00");
         BigDecimal valorDiario = new BigDecimal("15.00");
         YearMonth mesReferencia = YearMonth.of(2025, 10);
@@ -108,7 +108,7 @@ public class IDescontoTest {
     @Test
     @DisplayName("VT: Calcula o desconto com base no custo real do benefício")
     void testeCalculoVT_CustoReal() throws Exception {
-        IDesconto vt = new ValeTransporte();
+        IDesconto vt = new DescontoValeTransporte();
         BigDecimal salario = new BigDecimal("2500.00");
         BigDecimal valorDiario = new BigDecimal("5.00");
         YearMonth mesReferencia = YearMonth.of(2025, 10);

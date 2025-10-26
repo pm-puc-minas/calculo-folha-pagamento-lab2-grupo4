@@ -96,7 +96,7 @@ class FolhaPagamentoTest {
         assertEquals(new BigDecimal("50.00"), folhaGerada.getSalarioFamilia());
         assertEquals(new BigDecimal("150.00"), folhaGerada.getAdicionalFerias());
         assertEquals(new BigDecimal("300.00"), folhaGerada.getValeAlimentacao());
-        assertEquals(new BigDecimal("100.00"), folhaGerada.getValeTransporte());
+        assertEquals(new BigDecimal("100.00"), folhaGerada.getPronventoValeTransporte());
         assertEquals(new BigDecimal("400.00"), folhaGerada.getValorFGTS());
 
         assertEquals(salarioLiquidoCalculado, folhaGerada.getSalarioLiquido(), "Salário líquido está incorreto");

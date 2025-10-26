@@ -40,6 +40,10 @@ public class FolhaPagamento implements Serializable {
     @Column(name = "valor_salario_hora")
     private BigDecimal valorSalarioHora = BigDecimal.ZERO;
 
+    @PositiveOrZero(message = "O salário líquido não pode ser negativo")
+    @Column(name = "salario_liquido")
+    private BigDecimal salarioLiquido = BigDecimal.ZERO;
+
     @PositiveOrZero(message = "O total de proventos não pode ser negativo")
     @Column(name = "total_proventos")
     private BigDecimal totalProventos = BigDecimal.ZERO;
@@ -47,10 +51,6 @@ public class FolhaPagamento implements Serializable {
     @PositiveOrZero(message = "O total de descontos não pode ser negativo")
     @Column(name = "total_descontos")
     private BigDecimal totalDescontos = BigDecimal.ZERO;
-
-    @PositiveOrZero(message = "O salário líquido não pode ser negativo")
-    @Column(name = "salario_liquido")
-    private BigDecimal salarioLiquido = BigDecimal.ZERO;
 
     @PositiveOrZero(message = "O valor do INSS não pode ser negativo")
     @Column(name = "valor_inss")
@@ -60,13 +60,25 @@ public class FolhaPagamento implements Serializable {
     @Column(name = "valor_irrf")
     private BigDecimal valorIRRF = BigDecimal.ZERO;
 
+    @PositiveOrZero(message = "O valor do Desconto Vale Transporte não pode ser negativo")
+    @Column(name = "valor_desconto_VT")
+    private BigDecimal descontoValeTransporte = BigDecimal.ZERO;
+
     @PositiveOrZero(message = "O valor do FGTS não pode ser negativo")
     @Column(name = "valor_fgts")
     private BigDecimal valorFGTS = BigDecimal.ZERO;
 
-    @PositiveOrZero(message = "O valor do Vale Transporte não pode ser negativo")
-    @Column(name = "valor_VT")
-    private BigDecimal valeTransporte = BigDecimal.ZERO;
+    @PositiveOrZero(message = "O valor do adicional de Insalubridade não pode ser negativo")
+    @Column(name = "adicional_insalubridade")
+    private BigDecimal insalubridade = BigDecimal.ZERO;
+
+    @PositiveOrZero(message = "O valor do adicional de Periculosidade não pode ser negativo")
+    @Column(name = "adicional_periculosidade")
+    private BigDecimal periculosidade = BigDecimal.ZERO;
+
+    @PositiveOrZero(message = "O valor do Provento Vale Transporte não pode ser negativo")
+    @Column(name = "valor_provento_VT")
+    private BigDecimal pronventoValeTransporte = BigDecimal.ZERO;
 
     @PositiveOrZero(message = "O valor do Vale Alimentacao não pode ser negativo")
     @Column(name = "valor_VA")

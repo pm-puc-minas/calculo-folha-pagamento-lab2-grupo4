@@ -11,7 +11,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 @Component
-public class ValeTransporte implements IDesconto {
+public class DescontoValeTransporte implements IDesconto {
 
     private static final BigDecimal TAXA_SALARIAL = new BigDecimal("0.06");
 

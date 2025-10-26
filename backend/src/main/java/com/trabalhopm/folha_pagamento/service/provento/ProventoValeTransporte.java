@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 import java.time.YearMonth;
 
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
-import com.trabalhopm.folha_pagamento.service.desconto.ValeTransporte;
+import com.trabalhopm.folha_pagamento.service.desconto.DescontoValeTransporte;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +23,7 @@ public class ProventoValeTransporte implements IProvento {
             );
         
         
-        ValeTransporte calculoDescontoVT = new ValeTransporte();
+        DescontoValeTransporte calculoDescontoVT = new DescontoValeTransporte();
         BigDecimal descontoFuncionario = calculoDescontoVT.calcular(funcionario, mesReferencia);
         
         
