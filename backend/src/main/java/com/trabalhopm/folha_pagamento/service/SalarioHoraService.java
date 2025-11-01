@@ -1,4 +1,4 @@
-package com.trabalhopm.folha_pagamento.service.financeiro;
+package com.trabalhopm.folha_pagamento.service;
 
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import org.springframework.stereotype.Service;

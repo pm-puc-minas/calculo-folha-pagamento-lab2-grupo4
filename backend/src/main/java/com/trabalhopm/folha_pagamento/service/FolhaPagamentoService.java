@@ -27,6 +27,9 @@ public class FolhaPagamentoService {
     private FolhaPagamentoRepository folhaPagamentoRepository;
 
     @Autowired
+    private SalarioHoraService salarioHoraService;
+
+    @Autowired
     private List<IProvento> proventos;
 
     @Autowired
@@ -51,6 +54,8 @@ public class FolhaPagamentoService {
 
     public FolhaPagamento gerarFolha(Funcionario funcionario, YearMonth periodo) throws Exception {
         FolhaPagamento folhaPagamento = new FolhaPagamento(funcionario, periodo);
+
+        folhaPagamento.setValorSalarioHora(salarioHoraService.calcularSalarioHora(funcionario));
 
         Map<String, BigDecimal> proventosCalculados = calcularProventos(funcionario, periodo);
         Map<String, BigDecimal> descontosCalculados = calcularDescontos(funcionario, periodo);
