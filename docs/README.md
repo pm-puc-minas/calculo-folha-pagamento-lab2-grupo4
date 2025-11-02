@@ -14,7 +14,7 @@ O processo de cálculo parte do salário bruto, sobre o qual são aplicados os a
 
 ## Diagrama de Classes
 
-![Diagrama UML](images/diagrama-uml.png)
+![Diagrama UML](images/diagrama-uml.jpg)
 
 ## Modelos das telas do frontend
 
@@ -61,104 +61,92 @@ Acesso aos gráficos e estatísticas do salário mensal de todos os funcionário
 
 ---
 
-# Documentação - Cartões CRC
+## Documentação - Cartões CRC
 
 Os cartões CRC (Classe – Responsabilidade – Colaboração) são uma técnica utilizada no processo de modelagem orientada a objetos.  
 Eles ajudam a representar de forma simples e visual as principais responsabilidades de uma classe e como ela se relaciona com outras classes dentro de um sistema.
 
 ---
 
----
-
 ## Cartões CRC
 
 ### Funcionário
-**Responsabilidades:**
-- Armazenar dados pessoais e contratuais (nome, CPF, cargo, salário bruto, dependentes, data de admissão).  
-- Fornecer informações necessárias para cálculos da folha.  
-
-**Colaborações:**
-- Folha de Pagamento (fornece os dados para cálculos).  
-- Cálculo Financeiro (usado indiretamente para cálculos).  
+| **Responsabilidades** | **Colaborações** |
+| ---------------------- | ---------------- |
+| Armazenar dados pessoais e contratuais (nome, CPF, cargo, salário bruto, dependentes, data de admissão). | Folha de Pagamento (fornece os dados para cálculos). |
+| Fornecer informações necessárias para cálculos da folha. | Cálculo Financeiro (usado indiretamente para cálculos). |
 
 ---
 
 ### Folha de Pagamento
-**Responsabilidades:**
-- Gerenciar o vínculo com o funcionário.  
-- Guardar dados da folha (mês de referência, salário hora, salário líquido).  
-- Gerar relatório consolidado da folha de pagamento.  
-- Agregar proventos e descontos.  
-
-**Colaborações:**
-- Funcionário (para obter salário bruto, dependentes etc.).  
-- Cálculo Financeiro (para realizar os cálculos).  
-- Provento e Desconto (lista de itens que compõem a folha).  
+| **Responsabilidades** | **Colaborações** |
+| ---------------------- | ---------------- |
+| Gerenciar o vínculo com o funcionário. | Funcionário (para obter salário bruto, dependentes etc.). |
+| Guardar dados da folha (mês de referência, salário hora, salário líquido). | Cálculo Financeiro (para realizar os cálculos). |
+| Gerar relatório consolidado da folha de pagamento. | Provento e Desconto (lista de itens que compõem a folha). |
+| Agregar proventos e descontos. | 
 
 ---
 
 ### Cálculo Financeiro
-**Responsabilidades:**
-- Calcular salário líquido.  
-- Calcular salário hora.  
-
-**Colaborações:**
-- Funcionário (usa seus dados para calcular valores).  
-- Folha de Pagamento (retorna valores para serem exibidos/armazenados).  
+| **Responsabilidades** | **Colaborações** |
+| ---------------------- | ---------------- |
+| Calcular salário líquido. | Funcionário (usa seus dados para calcular valores). |
+| Calcular salário hora. | Folha de Pagamento (retorna valores para serem exibidos/armazenados). |
 
 ---
 
 ### Provento (Interface)
-**Responsabilidades:**
-- Representar um item de ganho na folha (salário base, benefícios, adicionais).  
-- Armazenar descrição e valor.  
+| **Responsabilidades** | **Colaborações** |
+| ---------------------- | ---------------- |
+| Representar um item de ganho na folha (salário base, benefícios, adicionais). | Folha de Pagamento. |
+| Armazenar descrição e valor.  | |
 
-**Colaborações:**
-- Folha de Pagamento.  
-
-**Exemplos de Proventos:**
+**Proventos:**
 - Adicional de Periculosidade  
 - Adicional de Insalubridade  
-- Vale Alimentação  
+- Vale Alimentação
+- Vale Transporte
+- Salário Família
+- Férias
 
 ---
 
 ### Desconto (Interface)
-**Responsabilidades:**
-- Exibir detalhamento de proventos, descontos e valor líquido.  
+| **Responsabilidades** | **Colaborações** |
+| ---------------------- | ---------------- |
+| Representar um item de desconto na folha | Folha de Pagamento. |  
+| Armazenar descrição e valor.  | |
 
-**Colaborações:**
-- Folha de Pagamento.  
-
-**Exemplos de Descontos:**
+**Descontos:**
 - Desconto INSS  
-- Desconto IRFF  
-- Cálculo FGTS  
-- Vale Alimentação  
+- Desconto IRFF
+- Vale Transporte
 
 ---
 
-### Vale Transporte (Interface Provento e Desconto)
-**Responsabilidades:**
-- Representar o benefício Vale Transporte, podendo atuar tanto como Provento quanto como Desconto.  
+### Encargo Social (Interface)
+| **Responsabilidades** | **Colaborações** |
+| ---------------------- | ---------------- |
+| Representar um item de encargo social na folha | Folha de Pagamento. |  
+| Armazenar descrição e valor.  | |
 
-**Colaborações:**
-- Folha de Pagamento.  
+**Encargos Sociais:**
+- FGTS
 
 ---
 
+---
 
+## Princípios SOLID
 
-**Colaborações:**
-- Folha de Pagamento  
-- Funcionário  
-A lógica de cálculo segue os princípios **SOLID** para maximizar a flexibilidade, especialmente no tratamento de regras fiscais variáveis:
+O projeto segue os princípios **SOLID** para maximizar a flexibilidade, especialmente no tratamento de regras fiscais variáveis:
 
-* **SRP (Responsabilidade Única):** O `Cálculo Financeiro Service` apenas orquestra; as classes de `Provento` e `Desconto` (Ex: `InssCalculation.java`) são responsáveis por sua própria regra específica de cálculo.
+* **SRP (Responsabilidade Única):** As classes de `Provento` e `Desconto` são responsáveis por sua própria regra específica de cálculo.
 * **OCP (Aberto/Fechado):** O sistema deve ser aberto à extensão, mas fechado à modificação. Novas regras fiscais ou benefícios são adicionadas implementando as interfaces `Provento` ou `Desconto`, sem alterar o código do `FolhaPagamentoService`.
 * **DIP (Inversão de Dependência):** O `Service` depende de abstrações (Interfaces `Provento` e `Desconto`), não de implementações concretas, permitindo fácil substituição.
 
-### 3. Validação e Tipagem em Java
+### Validação e Tipagem em Java
 Utilizamos técnicas específicas de Java para garantir a integridade dos dados:
 
 | Conceito | Aplicação no Projeto | Dependência |
@@ -166,31 +154,30 @@ Utilizamos técnicas específicas de Java para garantir a integridade dos dados:
 | **Validation** | Utilização da especificação Bean Validation (JSR 380) para garantir que os dados de entrada (DTOs) e entidades sejam válidos (Ex: `@NotNull`, `@CPF`). | `spring-boot-starter-validation` |
 | **Unboxing** | Uso de classes *Wrapper* (`Double`, `Integer`, `BigDecimal`) em vez de tipos primitivos nos modelos de dados. Isso permite valores `null` no banco de dados e maior robustez em operações financeiras de alta precisão. | Padrão Java |
 
-### 4. Dependências (Maven - `pom.xml`)
+## Dependências (Maven)
 
-```xml
-<dependencies>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
+```SpringBoot Starter Web```
 
-    <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-    </dependency>
-    
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
+```Spring Boot DevTools```
+
+```Spring Boot Starter Test```
+
+```Lombok```
+
+```Spring Boot Starter Validation```
+
+```Gson```
+
+```Spring Boot Starter Data JPA```
+
+```PostgreSQL Driver```
+
+```SpringDoc OpenAPI (Swagger UI)```
+
+```Spring Boot Starter Security```
+
+```Spring Security Test```
+
+```Auth0 Java JWT```
     </dependency>
 </dependencies>
