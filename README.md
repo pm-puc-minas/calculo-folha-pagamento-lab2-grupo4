@@ -44,7 +44,7 @@ Em breve será adicionado o guia de execução
 
 ---
 
-## Endpoints da API (Resumo)
+## 📡 Endpoints da API (Resumo)
 
 Para a documentação completa e interativa, acesse: `http://localhost:8080/swagger-ui.html` (com o backend em execução).
 
