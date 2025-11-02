@@ -4,9 +4,11 @@ import com.trabalhopm.folha_pagamento.domain.Financeiro;
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import com.trabalhopm.folha_pagamento.dto.FuncionarioDTO;
 import com.trabalhopm.folha_pagamento.repository.FuncionarioRepository;
+import com.trabalhopm.folha_pagamento.service.events.FuncionarioCadastradoEvent;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,10 @@ public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
 
     public List<Funcionario> findAll(){
         return funcionarioRepository.findAll();
@@ -60,6 +66,10 @@ public class FuncionarioService {
         financeiro.setFuncionario(funcionario);
         funcionario.setFinanceiro(financeiro);
 
-        return funcionarioRepository.save(funcionario);
+        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
+
+        eventPublisher.publishEvent(new FuncionarioCadastradoEvent(funcionarioSalvo));
+
+        return funcionarioSalvo;
     }
 }

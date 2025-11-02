@@ -6,11 +6,15 @@ import com.trabalhopm.folha_pagamento.repository.FolhaPagamentoRepository;
 
 import com.trabalhopm.folha_pagamento.service.desconto.IDesconto;
 import com.trabalhopm.folha_pagamento.service.encargoSocial.IEncargoSocial;
+import com.trabalhopm.folha_pagamento.service.events.folha_events.FolhaDeletadaEvent;
+import com.trabalhopm.folha_pagamento.service.events.folha_events.FolhaGeradaEvent;
+import com.trabalhopm.folha_pagamento.service.events.folha_events.GetFolhaExistenteEvent;
 import com.trabalhopm.folha_pagamento.service.provento.IProvento;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -38,18 +42,26 @@ public class FolhaPagamentoService {
     @Autowired
     private List<IEncargoSocial> encargos;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @Transactional
     public FolhaPagamento getFolha(Funcionario funcionario, YearMonth periodo) throws Exception {
 
         Optional<FolhaPagamento> folhaExistente = folhaPagamentoRepository.findByFuncionarioAndPeriodo(funcionario, periodo);
 
         if (folhaExistente.isPresent()) {
+            eventPublisher.publishEvent(new GetFolhaExistenteEvent(folhaExistente.get()));
             return folhaExistente.get();
         }
 
         FolhaPagamento novaFolha = gerarFolha(funcionario, periodo);
 
-        return folhaPagamentoRepository.save(novaFolha);
+        FolhaPagamento folhaSalva = folhaPagamentoRepository.save(novaFolha);
+
+        eventPublisher.publishEvent(new FolhaGeradaEvent(folhaSalva));
+
+        return folhaSalva;
     }
 
     public FolhaPagamento gerarFolha(Funcionario funcionario, YearMonth periodo) throws Exception {
@@ -160,6 +172,8 @@ public class FolhaPagamentoService {
     public void deleteByFuncionarioAndPeriodo(Funcionario funcionario, YearMonth periodo) {
         FolhaPagamento folha = folhaPagamentoRepository.findByFuncionarioAndPeriodo(funcionario, periodo)
                 .orElseThrow(() -> new EntityNotFoundException("Folha de pagamento não encontrada"));
+
+        eventPublisher.publishEvent(new FolhaDeletadaEvent(folha));
 
         folhaPagamentoRepository.deleteById(folha.getId());
     }

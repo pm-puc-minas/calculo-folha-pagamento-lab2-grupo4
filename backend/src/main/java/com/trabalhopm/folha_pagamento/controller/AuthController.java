@@ -6,8 +6,10 @@ import com.trabalhopm.folha_pagamento.dto.LoginResponseDTO;
 import com.trabalhopm.folha_pagamento.infra.security.TokenService;
 import com.trabalhopm.folha_pagamento.repository.FuncionarioRepository;
 
+import com.trabalhopm.folha_pagamento.service.events.LoginSucessoEvent;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,13 +32,20 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody @Valid AuthDTO data){
         try {
             var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.senha());
             var auth = authenticationManager.authenticate(usernamePassword);
 
-            var token = tokenService.gerarToken((Funcionario) auth.getPrincipal());
+            var funcionario = (Funcionario) auth.getPrincipal();
+
+            var token = tokenService.gerarToken(funcionario);
+
+            eventPublisher.publishEvent(new LoginSucessoEvent(funcionario));
 
             return ResponseEntity.ok(new LoginResponseDTO(token));
         } catch (Exception e) {
