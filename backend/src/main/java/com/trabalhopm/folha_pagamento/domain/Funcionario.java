@@ -15,17 +15,12 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "funcionarios")
-public class Funcionario implements Serializable {
+public class Funcionario extends Usuario implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NotBlank(message = "O nome não pode estar em branco")
     private String nome;

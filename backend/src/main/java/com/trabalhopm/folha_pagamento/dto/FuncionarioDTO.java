@@ -1,6 +1,7 @@
 package com.trabalhopm.folha_pagamento.dto;
 
 import com.trabalhopm.folha_pagamento.domain.enums.NivelInsalubridade;
+import com.trabalhopm.folha_pagamento.domain.enums.TipoUsuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -11,6 +12,15 @@ import java.time.LocalDate;
 
 @Data
 public class FuncionarioDTO {
+
+    @NotBlank(message = "O login não pode estar em branco")
+    private String login;
+
+    @NotBlank(message = "A senha não pode estar em branco")
+    private String senha;
+
+    @NotNull(message = "O tipo do usuário não pode ser nulo")
+    private TipoUsuario tipoUsuario;
 
     @NotBlank(message = "O nome não pode estar em branco")
     private String nome;

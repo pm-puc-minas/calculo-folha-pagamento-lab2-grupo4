@@ -7,6 +7,7 @@ import com.trabalhopm.folha_pagamento.repository.FuncionarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,17 @@ public class FuncionarioService {
 
     @Transactional
     public Funcionario create(FuncionarioDTO funcionarioDTO){
+        if (funcionarioRepository.findByLogin(funcionarioDTO.getLogin()) != null) {
+            throw new IllegalArgumentException("Este login já está em uso.");
+        }
+
+        String senhaEncriptada = new BCryptPasswordEncoder().encode(funcionarioDTO.getSenha());
+
         Funcionario funcionario = new Funcionario();
+
+        funcionario.setLogin(funcionarioDTO.getLogin());
+        funcionario.setSenha(senhaEncriptada);
+        funcionario.setTipo(funcionarioDTO.getTipoUsuario());
 
         funcionario.setNome(funcionarioDTO.getNome());
         funcionario.setCPF(funcionarioDTO.getCpf());
