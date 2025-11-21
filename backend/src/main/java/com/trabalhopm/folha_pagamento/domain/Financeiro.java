@@ -46,6 +46,10 @@ public class Financeiro implements Serializable {
     @Column(name = "valor_diario_VT")
     private BigDecimal valorDiarioValeTransporte;
 
+    @PositiveOrZero(message = "O valor diário do vale alimentação não pode ser negativo")
+    @Column(name = "valor_diario_VA")
+    private BigDecimal valorDiarioValeAlimentacao;
+
     @OneToOne
     @JoinColumn(name = "funcionario_id", unique = true)
     @JsonBackReference

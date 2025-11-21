@@ -13,7 +13,6 @@ import java.util.List;
 
 @Component
 public class ValeAlimentacao implements IProvento {
-    private final BigDecimal VALOR_DIARIO = new BigDecimal("32");
 
     @Override
     public BigDecimal calcular(Funcionario funcionario, YearMonth mesReferencia) throws Exception {
@@ -36,7 +35,9 @@ public class ValeAlimentacao implements IProvento {
             }
         }
 
-        return VALOR_DIARIO.multiply(BigDecimal.valueOf(diasUteis));
+        BigDecimal valorDiario = funcionario.getFinanceiro().getValorDiarioValeAlimentacao();
+
+        return valorDiario.multiply(BigDecimal.valueOf(diasUteis));
     }
 
     @Override

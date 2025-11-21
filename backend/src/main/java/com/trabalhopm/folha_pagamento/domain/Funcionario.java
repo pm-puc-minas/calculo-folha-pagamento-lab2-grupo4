@@ -28,8 +28,15 @@ public class Funcionario extends Usuario implements Serializable {
     @NotBlank(message = "O CPF não pode estar em branco")
     private String cpf;
 
+    @NotBlank
+    private String telefone;
+
     @NotBlank(message = "O cargo não pode estar em branco")
     private String cargo;
+
+    @Column(name = "data_nascimento")
+    @Past(message = "Digite uma data de nascimento válida")
+    private LocalDate dataNascimento;
 
     @Column(name = "data_admissao")
     @PastOrPresent(message = "Digite uma data de admissão válida")

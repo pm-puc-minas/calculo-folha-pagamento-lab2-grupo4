@@ -46,7 +46,7 @@
 
       <!-- Card de Login -->
       <div class="bg-background rounded-xl shadow-lg border border-border p-8">
-        <form id="loginForm" onsubmit="handleLogin(event)">
+        <form id="loginForm">
           <div class="space-y-6">
             <!-- Email -->
             <div>
@@ -57,7 +57,7 @@
                 type="email" 
                 id="email" 
                 name="email"
-                value="admin@empresa.com"
+                value=""
                 required
                 class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="seu@email.com"
@@ -73,7 +73,7 @@
                 type="password" 
                 id="password" 
                 name="password"
-                value="admin123"
+                value=""
                 required
                 class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="••••••••"
@@ -117,20 +117,6 @@
     </div>
   </div>
 
-  <script>
-    function handleLogin(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      // Validação simples
-      if (email === 'admin@empresa.com' && password === 'admin123') {
-        localStorage.setItem('isAuthenticated', 'true');
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('Credenciais inválidas! Use: admin@empresa.com / admin123');
-      }
-    }
-  </script>
+  <script type="module" src="assets/js/login.js"></script>
 </body>
 </html>

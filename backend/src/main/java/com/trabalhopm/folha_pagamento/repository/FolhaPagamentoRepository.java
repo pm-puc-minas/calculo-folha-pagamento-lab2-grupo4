@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface FolhaPagamentoRepository extends JpaRepository<FolhaPagamento, Long> {
     Optional<FolhaPagamento> findByFuncionarioAndPeriodo(Funcionario funcionario, YearMonth periodo);
     List<FolhaPagamento> findAllByFuncionario(Funcionario funcionario);
+    List<FolhaPagamento> findAllByPeriodo(YearMonth periodo);
 }

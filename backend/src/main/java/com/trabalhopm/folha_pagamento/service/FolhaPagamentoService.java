@@ -159,6 +159,10 @@ public class FolhaPagamentoService {
         return folhaPagamentoRepository.findAllByFuncionario(funcionario);
     }
 
+    public List<FolhaPagamento> findAllByPeriodo(YearMonth periodo) {
+        return folhaPagamentoRepository.findAllByPeriodo(periodo);
+    }
+
     public List<FolhaPagamento> findAll(){
         return folhaPagamentoRepository.findAll();
     }

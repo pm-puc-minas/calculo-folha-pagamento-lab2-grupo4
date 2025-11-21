@@ -26,8 +26,14 @@ public class FuncionarioDTO {
     @NotBlank(message = "O CPF não pode estar em branco")
     private String cpf;
 
+    @NotBlank(message = "O telefone não pode estar em branco")
+    private String telefone;
+
     @NotBlank(message = "O cargo não pode estar em branco")
     private String cargo;
+
+    @Past
+    private LocalDate dataNascimento;
 
     @PastOrPresent(message = "Digite uma data de admissão válida")
     private LocalDate dataAdmissao;

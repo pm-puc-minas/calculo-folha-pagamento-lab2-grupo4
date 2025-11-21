@@ -135,6 +135,14 @@ export async function findFolhaById(id) {
     return apiFetch(`/folhas/${id}`);
 }
 
+/**
+ * Endpoint: GET /folhas/periodo/{periodo}
+ * Busca folhas de pagamento por período.
+ */
+export async function findFolhasByPeriodo(periodo) {
+    return apiFetch(`/folhas/periodo/${periodo}`);
+}
+
 // DELETE
 
 /**

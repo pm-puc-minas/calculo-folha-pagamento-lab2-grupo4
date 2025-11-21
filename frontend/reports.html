@@ -279,12 +279,13 @@
   </main>
 
   <script>
-    if (!localStorage.getItem('isAuthenticated')) {
+    if (!localStorage.getItem('isAuthenticated') && !localStorage.getItem('token')) {
       window.location.href = 'login.html';
     }
 
     function logout() {
       localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('token');
       window.location.href = 'login.html';
     }
   </script>

@@ -24,6 +24,8 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("API Folha de Pagamento")
                     .withSubject(funcionario.getLogin())
+                    .withClaim("id", funcionario.getId())
+                    .withClaim("role", funcionario.getTipo().name())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         } catch(JWTCreationException exception){

@@ -100,10 +100,6 @@
             <input type="text" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="000.000.000-00">
           </div>
           <div>
-            <label class="block text-sm font-medium text-foreground mb-2">RG</label>
-            <input type="text" class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="00.000.000-0">
-          </div>
-          <div>
             <label class="block text-sm font-medium text-foreground mb-2">Data de Nascimento *</label>
             <input type="date" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
           </div>
@@ -122,10 +118,6 @@
             <label class="block text-sm font-medium text-foreground mb-2">Telefone *</label>
             <input type="tel" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="(11) 98765-4321">
           </div>
-          <div class="md:col-span-2">
-            <label class="block text-sm font-medium text-foreground mb-2">Endereço</label>
-            <input type="text" class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Rua Exemplo, 123">
-          </div>
         </div>
       </div>
 
@@ -134,23 +126,8 @@
         <h3 class="text-lg font-semibold text-foreground mb-4">Informações Profissionais</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Matrícula *</label>
-            <input type="text" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="001234">
-          </div>
-          <div>
             <label class="block text-sm font-medium text-foreground mb-2">Data de Admissão *</label>
             <input type="date" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Departamento *</label>
-            <select required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-              <option value="">Selecione...</option>
-              <option>Tecnologia</option>
-              <option>Recursos Humanos</option>
-              <option>Financeiro</option>
-              <option>Vendas</option>
-              <option>Marketing</option>
-            </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-foreground mb-2">Cargo *</label>
@@ -161,14 +138,22 @@
             <input type="number" step="0.01" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="5000.00">
           </div>
           <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Tipo de Contrato *</label>
+            <label class="block text-sm font-medium text-foreground mb-2">Número de dependentes *</label>
+            <input type="number" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0">
+          </div>          
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Nível insalubridade *</label>
             <select required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
               <option value="">Selecione...</option>
-              <option>CLT</option>
-              <option>PJ</option>
-              <option>Estágio</option>
-              <option>Temporário</option>
+              <option>NENHUM</option>
+              <option>BAIXO</option>
+              <option>MEDIO</option>
+              <option>ALTO</option>
             </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Possui periculosidade? *</label>
+            <input type="checkbox" required class="" placeholder="0">
           </div>
         </div>
       </div>
@@ -178,19 +163,11 @@
         <h3 class="text-lg font-semibold text-foreground mb-4">Benefícios</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Vale Transporte (R$)</label>
+            <label class="block text-sm font-medium text-foreground mb-2">Vale Transporte Diário (R$)</label>
             <input type="number" step="0.01" class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0.00">
           </div>
           <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Vale Refeição (R$)</label>
-            <input type="number" step="0.01" class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0.00">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Vale Alimentação (R$)</label>
-            <input type="number" step="0.01" class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0.00">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Plano de Saúde (R$)</label>
+            <label class="block text-sm font-medium text-foreground mb-2">Vale Alimentação Diário (R$)</label>
             <input type="number" step="0.01" class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0.00">
           </div>
         </div>
@@ -209,12 +186,13 @@
   </main>
 
   <script>
-    if (!localStorage.getItem('isAuthenticated')) {
+    if (!localStorage.getItem('isAuthenticated') && !localStorage.getItem('token')) {
       window.location.href = 'login.html';
     }
 
     function logout() {
       localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('token');
       window.location.href = 'login.html';
     }
 
