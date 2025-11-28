@@ -1,15 +1,8 @@
 import { findAllFuncionarios } from '../../services/api-service.js';
 import { getRoleByToken } from '../../services/decode-jwt.js';
-import { getUserName } from '../../services/utils.js';
 
 var funcionarios;
 var paginas;
-
-async function atualizarNomeUsuario() {
-    const usernameSpan = document.getElementById('username');
-    let nome = await getUserName();
-    usernameSpan.textContent = nome;
-}
 
 function criarTabela() {
     const tabelaContainer = document.getElementById('funcionarios');
@@ -235,13 +228,10 @@ async function carregarPaginacao() {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-    if (!localStorage.getItem('token')) {
-      window.location.href = 'login.html';
-    }
-
     let role = getRoleByToken();
-
-    await atualizarNomeUsuario();
+    if(role !== 'ADMIN'){
+        document.getElementById('btn-new-employee').style.display = 'none';
+    }
 
     await carregarFuncionarios();
 

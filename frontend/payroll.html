@@ -50,7 +50,7 @@
         <nav class="hidden md:flex items-center gap-6">
           <a href="dashboard.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Dashboard</a>
           <a href="employees.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Funcionários</a>
-          <a href="payroll.html" class="text-sm font-medium text-primary">Folha de Pagamento</a>
+          <a href="payroll.html" id="payroll-page" class="text-sm font-medium text-primary">Folha de Pagamento</a>
           <a href="reports.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Relatórios</a>
         </nav>
 
@@ -62,7 +62,7 @@
           </button>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">A</div>
-            <span class="text-sm font-medium text-foreground hidden sm:block">Admin</span>
+            <span id="username" class="text-sm font-medium text-foreground hidden sm:block"></span>
           </div>
           <button onclick="logout()" class="text-sm text-muted-foreground hover:text-destructive">Sair</button>
         </div>
@@ -88,37 +88,37 @@
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-background rounded-xl border border-border p-6">
+      <div id="stat-bruto" class="bg-background rounded-xl border border-border p-6">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-sm font-medium text-muted-foreground">Folha Atual</h3>
           <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
         </div>
-        <p class="text-3xl font-bold text-foreground mb-1">R$ 487.500</p>
-        <p class="text-xs text-green-600">+5% vs mês anterior</p>
+        <p id="valor-bruto" class="text-3xl font-bold text-foreground mb-1"></p>
+        <p class="text-xs text-green-600">Período atual</p>
       </div>
 
-      <div class="bg-background rounded-xl border border-border p-6">
+      <div id="stat-descontos" class="bg-background rounded-xl border border-border p-6">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-sm font-medium text-muted-foreground">Total de Descontos</h3>
           <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
           </svg>
         </div>
-        <p class="text-3xl font-bold text-foreground mb-1">R$ 97.500</p>
-        <p class="text-xs text-muted-foreground">20% do total bruto</p>
+        <p id="valor-descontos" class="text-3xl font-bold text-foreground mb-1"></p>
+        <p id="percentual-descontos" class="text-xs text-muted-foreground"></p>
       </div>
 
-      <div class="bg-background rounded-xl border border-border p-6">
+      <div id="stat-liquido" class="bg-background rounded-xl border border-border p-6">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-sm font-medium text-muted-foreground">Líquido a Pagar</h3>
           <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
         </div>
-        <p class="text-3xl font-bold text-foreground mb-1">R$ 390.000</p>
-        <p class="text-xs text-muted-foreground">156 funcionários</p>
+        <p id="valor-liquido" class="text-3xl font-bold text-foreground mb-1"></p>
+        <p id="total-funcionarios-stat" class="text-xs text-muted-foreground"></p>
       </div>
     </div>
 
@@ -134,70 +134,13 @@
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Período</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Funcionários</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Total Bruto</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">INSS</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">IRRF</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Total Descontos</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Total Proventos</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Total Líquido</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Status</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Ações</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm font-medium text-foreground">Janeiro 2024</td>
-              <td class="py-3 px-4 text-sm text-foreground">156</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 487.500,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 53.625,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 43.875,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 390.000,00</td>
-              <td class="py-3 px-4">
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Processada</span>
-              </td>
-              <td class="py-3 px-4">
-                <button class="text-primary hover:text-primary-dark text-sm font-medium">Ver Detalhes</button>
-              </td>
-            </tr>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm font-medium text-foreground">Dezembro 2023</td>
-              <td class="py-3 px-4 text-sm text-foreground">152</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 464.000,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 51.040,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 41.760,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 371.200,00</td>
-              <td class="py-3 px-4">
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Processada</span>
-              </td>
-              <td class="py-3 px-4">
-                <button class="text-primary hover:text-primary-dark text-sm font-medium">Ver Detalhes</button>
-              </td>
-            </tr>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm font-medium text-foreground">Novembro 2023</td>
-              <td class="py-3 px-4 text-sm text-foreground">148</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 451.000,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 49.610,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 40.590,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 360.800,00</td>
-              <td class="py-3 px-4">
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Processada</span>
-              </td>
-              <td class="py-3 px-4">
-                <button class="text-primary hover:text-primary-dark text-sm font-medium">Ver Detalhes</button>
-              </td>
-            </tr>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm font-medium text-foreground">Outubro 2023</td>
-              <td class="py-3 px-4 text-sm text-foreground">145</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 442.000,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 48.620,00</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 39.780,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 353.600,00</td>
-              <td class="py-3 px-4">
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Processada</span>
-              </td>
-              <td class="py-3 px-4">
-                <button class="text-primary hover:text-primary-dark text-sm font-medium">Ver Detalhes</button>
-              </td>
-            </tr>
+          <tbody id="tabela-folhas">
           </tbody>
         </table>
       </div>
@@ -205,15 +148,14 @@
   </main>
 
   <script>
-    if (!localStorage.getItem('isAuthenticated') && !localStorage.getItem('token')) {
-      window.location.href = 'login.html';
-    }
-
     function logout() {
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('token');
       window.location.href = 'login.html';
     }
   </script>
+
+  <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/payroll.js"></script>
 </body>
 </html>

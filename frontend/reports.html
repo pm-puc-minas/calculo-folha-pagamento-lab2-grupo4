@@ -50,7 +50,7 @@
         <nav class="hidden md:flex items-center gap-6">
           <a href="dashboard.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Dashboard</a>
           <a href="employees.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Funcionários</a>
-          <a href="payroll.html" class="text-sm font-medium text-muted-foreground hover:text-foreground">Folha de Pagamento</a>
+          <a href="payroll.html" id="payroll-page" class="text-sm font-medium text-muted-foreground hover:text-foreground">Folha de Pagamento</a>
           <a href="reports.html" class="text-sm font-medium text-primary">Relatórios</a>
         </nav>
 
@@ -62,7 +62,7 @@
           </button>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">A</div>
-            <span class="text-sm font-medium text-foreground hidden sm:block">Admin</span>
+            <span id="username" class="text-sm font-medium text-foreground hidden sm:block"></span>
           </div>
           <button onclick="logout()" class="text-sm text-muted-foreground hover:text-destructive">Sair</button>
         </div>
@@ -78,141 +78,69 @@
         <h2 class="text-3xl font-bold text-foreground mb-2">Relatórios</h2>
         <p class="text-muted-foreground">Análises e relatórios detalhados do sistema</p>
       </div>
-      <button class="bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-lg transition-colors inline-flex items-center gap-2">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        Exportar Relatório
-      </button>
     </div>
 
     <!-- Overview Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-      <div class="bg-background rounded-xl border border-border p-6">
+    <div id="overview-cards" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div id="stat-bruto-card" class="bg-background rounded-xl border border-border p-6">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-sm font-medium text-muted-foreground">Total Pago (Ano)</h3>
           <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
         </div>
-        <p class="text-2xl font-bold text-foreground">R$ 5,4M</p>
+        <p id="stat-bruto" class="text-2xl font-bold text-foreground">R$ 0,00</p>
       </div>
 
-      <div class="bg-background rounded-xl border border-border p-6">
+      <div id="stat-inss-card" class="bg-background rounded-xl border border-border p-6">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-sm font-medium text-muted-foreground">INSS Total</h3>
           <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
           </svg>
         </div>
-        <p class="text-2xl font-bold text-foreground">R$ 594K</p>
+        <p id="stat-inss" class="text-2xl font-bold text-foreground">R$ 0,00</p>
       </div>
 
-      <div class="bg-background rounded-xl border border-border p-6">
+      <div id="stat-irrf-card" class="bg-background rounded-xl border border-border p-6">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-sm font-medium text-muted-foreground">IRRF Total</h3>
           <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
           </svg>
         </div>
-        <p class="text-2xl font-bold text-foreground">R$ 486K</p>
+        <p id="stat-irrf" class="text-2xl font-bold text-foreground">R$ 0,00</p>
       </div>
 
-      <div class="bg-background rounded-xl border border-border p-6">
+      <div id="stat-beneficios-card" class="bg-background rounded-xl border border-border p-6">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-sm font-medium text-muted-foreground">Benefícios</h3>
           <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
           </svg>
         </div>
-        <p class="text-2xl font-bold text-foreground">R$ 1,2M</p>
+        <p id="stat-beneficios" class="text-2xl font-bold text-foreground">R$ 0,00</p>
       </div>
     </div>
 
     <!-- Charts Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div id="charts-section" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       <!-- Evolução Mensal -->
       <div class="bg-background rounded-xl border border-border p-6">
         <h3 class="text-lg font-semibold text-foreground mb-4">Evolução da Folha de Pagamento</h3>
-        <div class="h-64 flex items-end justify-between gap-2">
-          <div class="flex-1 bg-primary/20 rounded-t" style="height: 60%">
-            <div class="h-full bg-primary rounded-t"></div>
-          </div>
-          <div class="flex-1 bg-primary/20 rounded-t" style="height: 65%">
-            <div class="h-full bg-primary rounded-t"></div>
-          </div>
-          <div class="flex-1 bg-primary/20 rounded-t" style="height: 70%">
-            <div class="h-full bg-primary rounded-t"></div>
-          </div>
-          <div class="flex-1 bg-primary/20 rounded-t" style="height: 75%">
-            <div class="h-full bg-primary rounded-t"></div>
-          </div>
-          <div class="flex-1 bg-primary/20 rounded-t" style="height: 80%">
-            <div class="h-full bg-primary rounded-t"></div>
-          </div>
-          <div class="flex-1 bg-primary/20 rounded-t" style="height: 85%">
-            <div class="h-full bg-primary rounded-t"></div>
-          </div>
+        <div id="grafico-evolucao" class="h-64 flex items-end justify-between gap-2">
+          <!-- Preenchido dinamicamente -->
         </div>
-        <div class="flex justify-between mt-4 text-xs text-muted-foreground">
-          <span>Ago</span>
-          <span>Set</span>
-          <span>Out</span>
-          <span>Nov</span>
-          <span>Dez</span>
-          <span>Jan</span>
+        <div id="labels-evolucao" class="flex justify-between mt-4 text-xs text-muted-foreground">
+          <!-- Preenchido dinamicamente -->
         </div>
       </div>
 
       <!-- Distribuição por Departamento -->
       <div class="bg-background rounded-xl border border-border p-6">
         <h3 class="text-lg font-semibold text-foreground mb-4">Distribuição por Departamento</h3>
-        <div class="space-y-4">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm text-foreground">Tecnologia</span>
-              <span class="text-sm font-medium text-foreground">35%</span>
-            </div>
-            <div class="w-full bg-muted rounded-full h-2">
-              <div class="bg-primary h-2 rounded-full" style="width: 35%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm text-foreground">Vendas</span>
-              <span class="text-sm font-medium text-foreground">25%</span>
-            </div>
-            <div class="w-full bg-muted rounded-full h-2">
-              <div class="bg-accent h-2 rounded-full" style="width: 25%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm text-foreground">Financeiro</span>
-              <span class="text-sm font-medium text-foreground">20%</span>
-            </div>
-            <div class="w-full bg-muted rounded-full h-2">
-              <div class="bg-purple-500 h-2 rounded-full" style="width: 20%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm text-foreground">Recursos Humanos</span>
-              <span class="text-sm font-medium text-foreground">12%</span>
-            </div>
-            <div class="w-full bg-muted rounded-full h-2">
-              <div class="bg-orange-500 h-2 rounded-full" style="width: 12%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm text-foreground">Marketing</span>
-              <span class="text-sm font-medium text-foreground">8%</span>
-            </div>
-            <div class="w-full bg-muted rounded-full h-2">
-              <div class="bg-pink-500 h-2 rounded-full" style="width: 8%"></div>
-            </div>
-          </div>
+        <div id="distribuicao-departamento" class="space-y-4">
+          <!-- Preenchido dinamicamente -->
         </div>
       </div>
     </div>
@@ -220,7 +148,7 @@
     <!-- Detailed Reports Table -->
     <div class="bg-background rounded-xl border border-border overflow-hidden">
       <div class="p-6 border-b border-border">
-        <h3 class="text-lg font-semibold text-foreground">Relatório Detalhado por Funcionário</h3>
+        <h3 class="text-lg font-semibold text-foreground">Relatório Detalhado</h3>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full">
@@ -231,63 +159,28 @@
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Salário Bruto</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">INSS</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">IRRF</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Benefícios</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Insalubridade</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Periculosidade</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Vale Transporte</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Vale Alimentação</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Salário Família</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Líquido</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm text-foreground">João Silva</td>
-              <td class="py-3 px-4 text-sm text-foreground">Tecnologia</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 8.500,00</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 908,85</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 1.065,00</td>
-              <td class="py-3 px-4 text-sm text-green-600">R$ 700,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 7.226,15</td>
-            </tr>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm text-foreground">Maria Santos</td>
-              <td class="py-3 px-4 text-sm text-foreground">Recursos Humanos</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 9.200,00</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 908,85</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 1.245,00</td>
-              <td class="py-3 px-4 text-sm text-green-600">R$ 700,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 7.746,15</td>
-            </tr>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm text-foreground">Pedro Costa</td>
-              <td class="py-3 px-4 text-sm text-foreground">Financeiro</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 5.800,00</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 696,00</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 485,00</td>
-              <td class="py-3 px-4 text-sm text-green-600">R$ 700,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 5.319,00</td>
-            </tr>
-            <tr class="border-b border-border hover:bg-muted">
-              <td class="py-3 px-4 text-sm text-foreground">Ana Lima</td>
-              <td class="py-3 px-4 text-sm text-foreground">Vendas</td>
-              <td class="py-3 px-4 text-sm text-foreground">R$ 4.500,00</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 480,00</td>
-              <td class="py-3 px-4 text-sm text-destructive">R$ 215,00</td>
-              <td class="py-3 px-4 text-sm text-green-600">R$ 700,00</td>
-              <td class="py-3 px-4 text-sm font-medium text-foreground">R$ 4.505,00</td>
-            </tr>
-          </tbody>
+          <tbody id="tabela-relatorio"></tbody>
         </table>
       </div>
     </div>
   </main>
 
   <script>
-    if (!localStorage.getItem('isAuthenticated') && !localStorage.getItem('token')) {
-      window.location.href = 'login.html';
-    }
-
     function logout() {
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('token');
       window.location.href = 'login.html';
     }
   </script>
+  <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/reports.js"></script>
 </body>
 </html>
