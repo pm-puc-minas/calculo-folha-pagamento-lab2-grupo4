@@ -1,5 +1,6 @@
-import { findFolhasByPeriodo } from '../../services/api-service.js';
+import { findFolhasByFuncionarioId, findFolhasByPeriodo } from '../../services/api-service.js';
 import { getPeriodoAtual, getPeriodoAnterior, totalFuncionarios, getUserName } from '../../services/utils.js';
+import { getIdByToken, getRoleByToken } from '../../services/decode-jwt.js';
 
 var folhas;
 
@@ -33,14 +34,38 @@ function criarTabela() {
     tabelaContainer.appendChild(tabela);
 }
 
-async function carregarFolhasRecentes(periodo) {
-    try {
-        folhas = await findFolhasByPeriodo(periodo);
+async function carregarFolhasRecentes(role, periodo = null, tentativa = 0) {
+    const MAX_TENTATIVAS = 3; // Limite de recursão para evitar loop infinito
 
-        if(folhas.length === 0) {
-            console.log('Nenhuma folha de pagamento encontrada para o período:', periodo);
-            carregarFolhasRecentes(getPeriodoAnterior(periodo));
-            return 0; // Indica que não há folhas no período atual, mas tentou carregar do período anterior
+    try {
+        if(role == 'ADMIN') {
+            // Se não houver período, usa o atual
+            if(!periodo) {
+                periodo = getPeriodoAtual();
+            }
+
+            folhas = await findFolhasByPeriodo(periodo);
+
+            // Se não encontrar folhas e ainda não atingiu limite, tenta período anterior
+            if(folhas.length === 0 && tentativa < MAX_TENTATIVAS) {
+                console.log(`Nenhuma folha encontrada para o período ${periodo}. Tentando período anterior... (tentativa ${tentativa + 1}/${MAX_TENTATIVAS})`);
+                const periodoAnterior = getPeriodoAnterior(periodo);
+                return await carregarFolhasRecentes(role, periodoAnterior, tentativa + 1);
+            }
+
+            if(folhas.length === 0) {
+                console.warn(`Nenhuma folha de pagamento encontrada após ${MAX_TENTATIVAS} tentativas.`);
+                return -1;
+            }
+        }
+        else{
+            let id = getIdByToken();
+            folhas = await findFolhasByFuncionarioId(id);
+
+            if(folhas.length === 0) {
+                console.log('Nenhuma folha de pagamento encontrada para o funcionário:', id);
+                return -1;
+            }
         }
 
         criarTabela();
@@ -61,7 +86,7 @@ async function carregarFolhasRecentes(periodo) {
             tabela.appendChild(row);
         });
 
-        console.log('Folhas de pagamento carregadas com sucesso.');
+        console.log(`Folhas de pagamento carregadas com sucesso para o período: ${periodo}`);
         return 1; // Indica sucesso ao carregar folhas recentes
     } catch (error) {
         console.error('Erro ao carregar folhas recentes:', error);
@@ -103,11 +128,41 @@ function totalDescontos() {
     return total;
 }
 
-async function atualizarEstatisticas() {
-    document.getElementById('total-funcionarios').textContent = await totalFuncionarios();
-    document.getElementById('total-folha-mes').textContent = `R$ ${ totalFolhaMes().toFixed(2) }`;
-    document.getElementById('media-salarios').textContent = `R$ ${ mediaSalarial().toFixed(2) }`;
-    document.getElementById('total-descontos').textContent = `R$ ${ totalDescontos().toFixed(2) }`;
+async function atualizarEstatisticas(role) {
+    if(role == 'ADMIN'){
+        console.log('Atualizando estatísticas para ADMIN');
+
+        document.getElementById('card-1').textContent = await totalFuncionarios();
+        document.getElementById('c1-text').textContent = 'Total de Funcionários';
+
+        document.getElementById('card-2').textContent = `R$ ${ totalFolhaMes().toFixed(2) }`;
+        document.getElementById('c2-text').textContent = 'Folha do Mês Atual';
+
+        document.getElementById('card-3').textContent = `R$ ${ mediaSalarial().toFixed(2) }`;
+        document.getElementById('c3-text').textContent = 'Média Salarial';
+
+        document.getElementById('card-4').textContent = `R$ ${ totalDescontos().toFixed(2) }`;
+        document.getElementById('c4-text').textContent = 'Descontos Totais';
+    }
+    else{
+        const ultimaFolha = folhas.length > 0 ? folhas[folhas.length - 1] : null;
+        
+        if (ultimaFolha) {
+            console.log('Atualizando estatísticas para USER com a última folha:', ultimaFolha);
+            
+            document.getElementById('card-1').textContent = `R$ ${ ultimaFolha.funcionario.financeiro.salarioBruto.toFixed(2) }`;
+            document.getElementById('c1-text').textContent = 'Salário Bruto';
+
+            document.getElementById('card-2').textContent = `R$ ${ ultimaFolha.salarioLiquido.toFixed(2) }`;
+            document.getElementById('c2-text').textContent = 'Salário Líquido';
+            
+            document.getElementById('card-3').textContent = `R$ ${ ultimaFolha.totalProventos.toFixed(2) }`;
+            document.getElementById('c3-text').textContent = 'Total de Proventos';
+
+            document.getElementById('card-4').textContent = `R$ ${ ultimaFolha.totalDescontos.toFixed(2) }`;
+            document.getElementById('c4-text').textContent = 'Total de Descontos';
+        }
+    }
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -115,16 +170,17 @@ document.addEventListener('DOMContentLoaded', async function () {
       window.location.href = 'login.html';
     }
 
-    await atualizarNomeUsuario();
+    const role = getRoleByToken();
+    console.log('Role do usuário:', role);
 
-    let periodo = getPeriodoAtual();
-
-    let folhasRecentes = await carregarFolhasRecentes(periodo);
-    if(folhasRecentes === 0) {
-        periodo = getPeriodoAnterior(periodo);
-        alert('Nenhuma folha de pagamento encontrada para o período atual. Exibindo folhas do período anterior: ' + periodo);
+    if(role == 'USER'){
+        document.getElementById('acoes-rapidas').style.display = 'none';
     }
 
-    await atualizarEstatisticas();
+    await atualizarNomeUsuario();
+
+    let folhasRecentes = await carregarFolhasRecentes(role);
+
+    await atualizarEstatisticas(role);
 
 });

@@ -1,4 +1,5 @@
 import { findAllFuncionarios } from '../../services/api-service.js';
+import { getRoleByToken } from '../../services/decode-jwt.js';
 import { getUserName } from '../../services/utils.js';
 
 var funcionarios;
@@ -237,6 +238,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!localStorage.getItem('token')) {
       window.location.href = 'login.html';
     }
+
+    let role = getRoleByToken();
 
     await atualizarNomeUsuario();
 
