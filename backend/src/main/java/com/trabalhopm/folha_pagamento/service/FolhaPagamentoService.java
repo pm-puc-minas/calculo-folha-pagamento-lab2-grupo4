@@ -3,7 +3,7 @@ package com.trabalhopm.folha_pagamento.service;
 import com.trabalhopm.folha_pagamento.domain.FolhaPagamento;
 import com.trabalhopm.folha_pagamento.domain.Funcionario;
 import com.trabalhopm.folha_pagamento.repository.FolhaPagamentoRepository;
-
+import com.trabalhopm.folha_pagamento.service.desconto.DescontoFactory;
 import com.trabalhopm.folha_pagamento.service.desconto.IDesconto;
 import com.trabalhopm.folha_pagamento.service.encargoSocial.IEncargoSocial;
 import com.trabalhopm.folha_pagamento.service.events.folha_events.FolhaDeletadaEvent;
@@ -37,7 +37,12 @@ public class FolhaPagamentoService {
     private List<IProvento> proventos;
 
     @Autowired
-    private List<IDesconto> descontos;
+    private DescontoFactory descontoFactory;
+
+    // Setter APENAS PARA TESTES
+    public void setDescontoFactory(DescontoFactory descontoFactory) {
+    this.descontoFactory = descontoFactory;
+    }
 
     @Autowired
     private List<IEncargoSocial> encargos;
@@ -103,10 +108,10 @@ public class FolhaPagamentoService {
         HashMap<String, BigDecimal> descontosCalculados = new HashMap<>();
         BigDecimal totalDescontos = BigDecimal.ZERO;
 
-        for (IDesconto d : descontos) {
+        for (IDesconto d : descontoFactory.getDescontos()) {
             BigDecimal valorDesconto = d.calcular(funcionario, periodo);
-            descontosCalculados.put(d.getNome(), valorDesconto);
 
+            descontosCalculados.put(d.getNome(), valorDesconto);
             totalDescontos = totalDescontos.add(valorDesconto);
         }
 
@@ -114,6 +119,7 @@ public class FolhaPagamentoService {
 
         return descontosCalculados;
     }
+
 
     public HashMap<String, BigDecimal> calcularProventos(Funcionario funcionario, YearMonth periodo) throws Exception {
         HashMap<String, BigDecimal> proventosCalculados = new HashMap<>();
