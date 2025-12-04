@@ -162,6 +162,33 @@
         </div>
       </div>
 
+      <!-- Dados Financeiros -->
+      <div class="bg-background rounded-xl border border-border p-6">
+        <h3 class="text-lg font-semibold text-foreground mb-4">Dados Financeiros</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Salário Bruto (R$) *</label>
+            <input type="number" id="salarioBruto" name="salarioBruto" step="0.01" min="0" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0.00">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Diário VA (R$) *</label>
+            <input type="number" id="diarioVA" name="diarioVA" step="0.01" min="0" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0.00">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Diário VR (R$) *</label>
+            <input type="number" id="diarioVR" name="diarioVR" step="0.01" min="0" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0.00">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Horas Trabalhadas/Dia *</label>
+            <input type="number" id="horasTrabalhadas" name="horasTrabalhadas" step="0.5" min="0" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="8">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Qtd. Dias Trabalhados/Semana *</label>
+            <input type="number" id="diasTrabalhados" name="diasTrabalhados" step="1" min="1" max="7" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="5">
+          </div>
+        </div>
+      </div>
+
       <!-- Buttons -->
       <div class="flex items-center justify-end gap-4">
         <a href="employees.html" class="px-6 py-2 border border-border rounded-lg text-foreground hover:bg-muted transition-colors">
@@ -193,28 +220,48 @@
       const form = event.target;
       const formData = new FormData(form);
       
-      // Preparar dados para envio
-      const funcionario = {
-        login: formData.get('login'),
-        senha: formData.get('senha'),
-        tipoUsuario: 'FUNCIONARIO',
-        nome: formData.get('nome'),
-        cpf: formData.get('cpf'),
-        telefone: formData.get('telefone'),
-        cargo: formData.get('cargo'),
-        dataNascimento: formData.get('dataNascimento'),
-        dataAdmissao: formData.get('dataAdmissao'),
-        numeroDeDependentes: parseInt(formData.get('numeroDeDependentes')),
-        nivelInsalubridade: formData.get('nivelInsalubridade'),
-        temPericulosidade: formData.get('temPericulosidade') === 'on',
-        deFerias: formData.get('deFerias') === 'on'
-      };
-
       try {
+        const salarioBruto = parseFloat(formData.get('salarioBruto'));
+        const diasTrabalhados = parseInt(formData.get('diasTrabalhados'));
+        
+        if (salarioBruto <= 0) {
+          throw new Error('Salário bruto deve ser maior que zero');
+        }
+        
+        if (diasTrabalhados < 1 || diasTrabalhados > 7) {
+          throw new Error('Dias trabalhados deve estar entre 1 e 7');
+        }
+        
+        const funcionario = {
+          login: formData.get('login'),
+          senha: formData.get('senha'),
+          tipoUsuario: 'USER',
+          nome: formData.get('nome'),
+          cpf: formData.get('cpf'),
+          telefone: formData.get('telefone'),
+          cargo: formData.get('cargo'),
+          dataNascimento: formData.get('dataNascimento'),
+          dataAdmissao: formData.get('dataAdmissao'),
+          numeroDeDependentes: parseInt(formData.get('numeroDeDependentes')) || 0,
+          nivelInsalubridade: formData.get('nivelInsalubridade'),
+          temPericulosidade: formData.get('temPericulosidade') === 'on',
+          deFerias: formData.get('deFerias') === 'on',
+          financeiro: {
+            salarioBruto: salarioBruto,
+            valorDiarioValeAlimentacao: parseFloat(formData.get('diarioVA')) || 0,
+            valorDiarioValeTransporte: parseFloat(formData.get('diarioVR')) || 0,
+            horasTrabalhadasDia: parseFloat(formData.get('horasTrabalhadas')) || 8,
+            diasTrabalhadosSemana: diasTrabalhados
+          }
+        };
+
+        console.log('Enviando dados:', JSON.stringify(funcionario, null, 2));
+        
         await cadastrarFuncionario(funcionario);
         alert('Funcionário cadastrado com sucesso!');
         window.location.href = 'employees.html';
       } catch (error) {
+        console.error('Erro:', error);
         alert(`Erro ao cadastrar funcionário: ${error.message}`);
       }
     }
