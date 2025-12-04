@@ -87,176 +87,300 @@
 
     <!-- Calculator Form -->
     <div class="bg-background rounded-xl border border-border p-6 mb-6">
-      <h3 class="text-lg font-semibold text-foreground mb-4">Calculadora Individual</h3>
-      <form onsubmit="calculatePayroll(event)" class="space-y-4">
+      <h3 class="text-lg font-semibold text-foreground mb-4">Gerar Folha de Pagamento</h3>
+      <form id="generateForm" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Salário Bruto (R$)</label>
-            <input 
-              type="number" 
-              id="salary" 
-              step="0.01" 
-              value="5000.00"
-              required 
-              class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
+            <label for="funcionarioSelect" class="block text-sm font-medium text-foreground mb-2">Funcionário</label>
+            <select id="funcionarioSelect" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              <option value="">Carregando...</option>
+            </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Dependentes</label>
-            <input 
-              type="number" 
-              id="dependents" 
-              value="0"
-              min="0"
-              class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
+            <label for="periodo" class="block text-sm font-medium text-foreground mb-2">Período (mm/aaaa)</label>
+            <input id="periodo" type="text" placeholder="mm/aaaa" maxlength="7" required class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" />
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Vale Transporte (R$)</label>
-            <input 
-              type="number" 
-              id="valeTransporte" 
-              step="0.01" 
-              value="200.00"
-              class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-foreground mb-2">Vale Refeição (R$)</label>
-            <input 
-              type="number" 
-              id="valeRefeicao" 
-              step="0.01" 
-              value="500.00"
-              class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-          </div>
-        </div>
-
-        <button 
-          type="submit"
-          class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 px-4 rounded-lg transition-colors"
-        >
-          Calcular
-        </button>
+        <button type="submit" id="generateBtn" class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 px-4 rounded-lg transition-colors">Gerar Folha</button>
       </form>
     </div>
 
-    <!-- Results -->
-    <div id="results" class="hidden bg-background rounded-xl border border-border p-6">
-      <h3 class="text-lg font-semibold text-foreground mb-4">Resultado do Cálculo</h3>
+    <!-- Result / Feedback -->
+    <div id="generateResult" class="hidden bg-background rounded-xl border border-border p-6">
+      <h3 class="text-lg font-semibold text-foreground mb-4">Resultado</h3>
+      <div id="generateMessage" class="text-sm text-foreground"></div>
+    </div>
+
+    <!-- Folha Details -->
+    <div id="folhaDetails" class="hidden bg-background rounded-xl border border-border p-6 mt-6">
+      <h3 class="text-lg font-semibold text-foreground mb-6">Detalhes da Folha de Pagamento</h3>
       
-      <div class="space-y-4">
-        <!-- Salário Bruto -->
-        <div class="flex items-center justify-between py-3 border-b border-border">
-          <span class="text-sm font-medium text-foreground">Salário Bruto</span>
-          <span id="resultBruto" class="text-sm font-bold text-foreground">R$ 0,00</span>
-        </div>
-
-        <!-- Benefícios -->
-        <div class="bg-muted rounded-lg p-4">
-          <p class="text-sm font-medium text-foreground mb-2">Benefícios</p>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-muted-foreground">Vale Transporte</span>
-              <span id="resultVT" class="text-sm text-green-600">+ R$ 0,00</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-muted-foreground">Vale Refeição</span>
-              <span id="resultVR" class="text-sm text-green-600">+ R$ 0,00</span>
-            </div>
+      <!-- Informações Gerais -->
+      <div class="mb-6 pb-6 border-b border-border">
+        <h4 class="text-base font-semibold text-foreground mb-3">Informações Gerais</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-muted-foreground">ID da Folha</p>
+            <p id="detalhe-id" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Funcionário</p>
+            <p id="detalhe-funcionario" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Período</p>
+            <p id="detalhe-periodo" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Cargo</p>
+            <p id="detalhe-cargo" class="text-sm font-medium text-foreground">-</p>
           </div>
         </div>
+      </div>
 
-        <!-- Descontos -->
-        <div class="bg-muted rounded-lg p-4">
-          <p class="text-sm font-medium text-foreground mb-2">Descontos</p>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-muted-foreground">INSS</span>
-              <span id="resultINSS" class="text-sm text-destructive">- R$ 0,00</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-muted-foreground">IRRF</span>
-              <span id="resultIRRF" class="text-sm text-destructive">- R$ 0,00</span>
-            </div>
+      <!-- Proventos -->
+      <div class="mb-6 pb-6 border-b border-border">
+        <h4 class="text-base font-semibold text-primary mb-3">Proventos</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-muted-foreground">Salário Base</p>
+            <p id="detalhe-salario-base" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Vale Alimentação</p>
+            <p id="detalhe-vale-alimentacao" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Vale Transporte</p>
+            <p id="detalhe-vale-transporte" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Salário Família</p>
+            <p id="detalhe-salario-familia" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Adicional Insalubridade</p>
+            <p id="detalhe-insalubridade" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Adicional Periculosidade</p>
+            <p id="detalhe-periculosidade" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Adicional Férias</p>
+            <p id="detalhe-adicional-ferias" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div class="md:col-span-2 bg-primary/10 p-3 rounded-lg">
+            <p class="text-xs text-muted-foreground">Total de Proventos</p>
+            <p id="detalhe-total-proventos" class="text-lg font-bold text-primary">-</p>
           </div>
         </div>
+      </div>
 
-        <!-- Salário Líquido -->
-        <div class="flex items-center justify-between py-4 border-t-2 border-primary">
-          <span class="text-lg font-bold text-foreground">Salário Líquido</span>
-          <span id="resultLiquido" class="text-2xl font-bold text-primary">R$ 0,00</span>
+      <!-- Descontos -->
+      <div class="mb-6 pb-6 border-b border-border">
+        <h4 class="text-base font-semibold text-destructive mb-3">Descontos</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-muted-foreground">INSS</p>
+            <p id="detalhe-inss" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">IRRF</p>
+            <p id="detalhe-irrf" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">Desconto Vale Transporte</p>
+            <p id="detalhe-desconto-vt" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground">FGTS</p>
+            <p id="detalhe-fgts" class="text-sm font-medium text-foreground">-</p>
+          </div>
+          <div class="md:col-span-2 bg-destructive/10 p-3 rounded-lg">
+            <p class="text-xs text-muted-foreground">Total de Descontos</p>
+            <p id="detalhe-total-descontos" class="text-lg font-bold text-destructive">-</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumo Final -->
+      <div>
+        <h4 class="text-base font-semibold text-foreground mb-3">Resumo Final</h4>
+        <div class="bg-accent/10 p-4 rounded-lg border-2 border-accent">
+          <p class="text-xs text-muted-foreground mb-1">Salário Líquido</p>
+          <p id="detalhe-salario-liquido" class="text-2xl font-bold text-accent">-</p>
         </div>
       </div>
     </div>
   </main>
 
   <script>
-    if (!localStorage.getItem('isAuthenticated') && !localStorage.getItem('token')) {
-      window.location.href = 'login.html';
-    }
-
+    // Função global de logout (usada no header)
     function logout() {
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('token');
       window.location.href = 'login.html';
     }
+  </script>
 
-    function calculateINSS(salary) {
-      if (salary <= 1412.00) return salary * 0.075;
-      if (salary <= 2666.68) return salary * 0.09;
-      if (salary <= 4000.03) return salary * 0.12;
-      if (salary <= 7786.02) return salary * 0.14;
-      return 908.85; // Teto do INSS
+  <script type="module">
+    import { findAllFuncionarios, gerarFolhaPagamento } from './services/api-service.js';
+    import { getIdByToken } from './services/decode-jwt.js';
+
+    const funcionarioSelect = document.getElementById('funcionarioSelect');
+    const periodoInput = document.getElementById('periodo');
+    const generateForm = document.getElementById('generateForm');
+    const generateBtn = document.getElementById('generateBtn');
+    const generateResult = document.getElementById('generateResult');
+    const generateMessage = document.getElementById('generateMessage');
+
+    function formatMessageSuccess(msg) {
+      return `<div class="text-sm text-foreground">${msg}</div>`;
     }
 
-    function calculateIRRF(salary, dependents) {
-      const deduction = dependents * 189.59;
-      const inss = calculateINSS(salary);
-      const base = salary - inss - deduction;
-
-      if (base <= 2259.20) return 0;
-      if (base <= 2826.65) return base * 0.075 - 169.44;
-      if (base <= 3751.05) return base * 0.15 - 381.44;
-      if (base <= 4664.68) return base * 0.225 - 662.77;
-      return base * 0.275 - 896.00;
+    function formatMessageError(msg) {
+      return `<div class="text-sm text-destructive">${msg}</div>`;
     }
 
     function formatCurrency(value) {
-      return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      }).format(value);
+      if (!value) return 'R$ 0,00';
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
     }
 
-    function calculatePayroll(event) {
-      event.preventDefault();
-
-      const salary = parseFloat(document.getElementById('salary').value);
-      const dependents = parseInt(document.getElementById('dependents').value);
-      const vt = parseFloat(document.getElementById('valeTransporte').value);
-      const vr = parseFloat(document.getElementById('valeRefeicao').value);
-
-      const inss = calculateINSS(salary);
-      const irrf = calculateIRRF(salary, dependents);
-      const liquido = salary + vt + vr - inss - irrf;
-
-      // Mostrar resultados
-      document.getElementById('results').classList.remove('hidden');
-      document.getElementById('resultBruto').textContent = formatCurrency(salary);
-      document.getElementById('resultVT').textContent = '+ ' + formatCurrency(vt);
-      document.getElementById('resultVR').textContent = '+ ' + formatCurrency(vr);
-      document.getElementById('resultINSS').textContent = '- ' + formatCurrency(inss);
-      document.getElementById('resultIRRF').textContent = '- ' + formatCurrency(irrf);
-      document.getElementById('resultLiquido').textContent = formatCurrency(liquido);
-
-      // Scroll para resultados
-      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    function preencherDetalhes(folha) {
+      document.getElementById('detalhe-id').textContent = folha.id || '-';
+      document.getElementById('detalhe-funcionario').textContent = folha.funcionario?.nome || '-';
+      document.getElementById('detalhe-periodo').textContent = folha.periodo || '-';
+      document.getElementById('detalhe-cargo').textContent = folha.funcionario?.cargo || '-';
+      
+      // Proventos
+      document.getElementById('detalhe-salario-base').textContent = formatCurrency(folha.valorSalarioHora);
+      document.getElementById('detalhe-vale-alimentacao').textContent = formatCurrency(folha.valeAlimentacao);
+      document.getElementById('detalhe-vale-transporte').textContent = formatCurrency(folha.proventoValeTransporte);
+      document.getElementById('detalhe-salario-familia').textContent = formatCurrency(folha.salarioFamilia);
+      document.getElementById('detalhe-insalubridade').textContent = formatCurrency(folha.insalubridade);
+      document.getElementById('detalhe-periculosidade').textContent = formatCurrency(folha.periculosidade);
+      document.getElementById('detalhe-adicional-ferias').textContent = formatCurrency(folha.adicionalFerias);
+      document.getElementById('detalhe-total-proventos').textContent = formatCurrency(folha.totalProventos);
+      
+      // Descontos
+      document.getElementById('detalhe-inss').textContent = formatCurrency(folha.valorINSS);
+      document.getElementById('detalhe-irrf').textContent = formatCurrency(folha.valorIRRF);
+      document.getElementById('detalhe-desconto-vt').textContent = formatCurrency(folha.descontoValeTransporte);
+      document.getElementById('detalhe-fgts').textContent = formatCurrency(folha.valorFGTS);
+      document.getElementById('detalhe-total-descontos').textContent = formatCurrency(folha.totalDescontos);
+      
+      // Resumo Final
+      document.getElementById('detalhe-salario-liquido').textContent = formatCurrency(folha.salarioLiquido);
     }
+
+    // Preenche o select de funcionários
+    async function loadFuncionarios() {
+      try {
+        const funcionarios = await findAllFuncionarios();
+        funcionarioSelect.innerHTML = '';
+        funcionarioSelect.appendChild(new Option('Selecione um funcionário', ''));
+        funcionarios.forEach(f => {
+          const text = f.nome + (f.cargo ? ` — ${f.cargo}` : '');
+          funcionarioSelect.appendChild(new Option(text, f.id));
+        });
+      } catch (err) {
+        funcionarioSelect.innerHTML = '';
+        funcionarioSelect.appendChild(new Option('Erro ao carregar', ''));
+        console.error('Erro ao carregar funcionários:', err);
+      }
+    }
+
+    // Define período padrão (mês atual em MM/AAAA)
+    function setDefaultPeriodo() {
+      const today = new Date();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      periodoInput.value = `${mm}/${yyyy}`;
+    }
+
+    // Converte formato MM/AAAA para AAAA-MM para a API
+    function convertPeriodoToAPIFormat(periodo) {
+      const [mm, yyyy] = periodo.split('/');
+      if (!mm || !yyyy || mm.length !== 2 || yyyy.length !== 4) {
+        throw new Error('Formato de período inválido. Use MM/AAAA');
+      }
+      return `${yyyy}-${mm}`;
+    }
+
+    // Envio do formulário -> chama gerarFolhaPagamento
+    generateForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const funcionarioId = funcionarioSelect.value;
+      const periodoInput_value = periodoInput.value; // formato MM/AAAA
+
+      if (!funcionarioId) {
+        generateResult.classList.remove('hidden');
+        generateMessage.innerHTML = formatMessageError('Selecione um funcionário.');
+        document.getElementById('folhaDetails').classList.add('hidden');
+        return;
+      }
+
+      let periodo;
+      try {
+        periodo = convertPeriodoToAPIFormat(periodoInput_value);
+      } catch (err) {
+        generateResult.classList.remove('hidden');
+        generateMessage.innerHTML = formatMessageError(err.message);
+        document.getElementById('folhaDetails').classList.add('hidden');
+        return;
+      }
+
+      generateBtn.disabled = true;
+      generateBtn.textContent = 'Gerando...';
+      generateResult.classList.add('hidden');
+      document.getElementById('folhaDetails').classList.add('hidden');
+
+      try {
+        const resposta = await gerarFolhaPagamento(funcionarioId, periodo);
+        // Se a API retornar dados, mostra uma mensagem com link opcional
+        generateResult.classList.remove('hidden');
+        if (resposta && resposta.id) {
+          generateMessage.innerHTML = formatMessageSuccess(`✓ Folha gerada com sucesso!`);
+          preencherDetalhes(resposta);
+          document.getElementById('folhaDetails').classList.remove('hidden');
+        } else {
+          generateMessage.innerHTML = formatMessageSuccess('Folha gerada com sucesso.');
+          document.getElementById('folhaDetails').classList.add('hidden');
+        }
+      } catch (err) {
+        console.error('Erro ao gerar folha:', err);
+        generateResult.classList.remove('hidden');
+        generateMessage.innerHTML = formatMessageError('Falha ao gerar folha: ' + err.message);
+        document.getElementById('folhaDetails').classList.add('hidden');
+      } finally {
+        generateBtn.disabled = false;
+        generateBtn.textContent = 'Gerar Folha';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!localStorage.getItem('token')) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      await loadFuncionarios();
+      setDefaultPeriodo();
+
+      // Se o usuário for não-admin, seleciona o próprio funcionário por padrão (se existir)
+      try {
+        const myId = getIdByToken();
+        if (myId) {
+          const option = [...funcionarioSelect.options].find(o => o.value == myId);
+          if (option) option.selected = true;
+        }
+      } catch (e) {
+        // ignore
+      }
+    });
   </script>
 </body>
 </html>

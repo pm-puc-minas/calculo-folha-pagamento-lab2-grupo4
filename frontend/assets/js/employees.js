@@ -17,7 +17,6 @@ function criarTabela() {
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Funcionário</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Data Admissão</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Cargo</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Salário bruto</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Status</th>
               <th class="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Ações</th>
             </tr>
@@ -122,7 +121,6 @@ async function carregarFuncionarios(paginaAtual){
                 </td>
                 <td class="py-3 px-4 text-sm text-foreground">${funcionario.dataAdmissao}</td>
                 <td class="py-3 px-4 text-sm text-foreground">${funcionario.cargo}</td>
-                <td class="py-3 px-4 text-sm font-medium text-foreground">R$ ${(funcionario.financeiro && funcionario.financeiro.salarioBruto) ? funcionario.financeiro.salarioBruto.toFixed(2) : '0.00'}</td>
                 <td class="py-3 px-4">
                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">${status}</span>
                 </td>
