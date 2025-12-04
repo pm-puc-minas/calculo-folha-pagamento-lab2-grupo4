@@ -27,7 +27,7 @@ public class InsalubridadeTest {
         funcionario = new Funcionario();
         // Um objeto Financeiro é necessário, mesmo que o salário bruto não seja usado diretamente
         // no cálculo de Insalubridade, mas é uma dependência da classe Funcionario.
-        funcionario.setFinanceiro(new Financeiro(null, new BigDecimal("2000.00"), 8.0, (byte) 5, BigDecimal.ZERO, funcionario));
+        funcionario.setFinanceiro(new Financeiro(null, new BigDecimal("2000.00"), 8.0, (byte) 5, BigDecimal.ZERO, BigDecimal.ZERO, funcionario));
     }
 
     @Test

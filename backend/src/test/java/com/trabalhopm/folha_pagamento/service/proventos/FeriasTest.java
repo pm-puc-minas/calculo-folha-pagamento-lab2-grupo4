@@ -26,7 +26,7 @@ public class FeriasTest {
         ferias = new Ferias();
         funcionario = new Funcionario();
         // Configuração de um Financeiro base (o salário bruto será alterado em cada teste)
-        funcionario.setFinanceiro(new Financeiro(null, BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.ZERO, funcionario));
+        funcionario.setFinanceiro(new Financeiro(null, BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.ZERO, BigDecimal.ZERO, funcionario));
     }
 
     @Test

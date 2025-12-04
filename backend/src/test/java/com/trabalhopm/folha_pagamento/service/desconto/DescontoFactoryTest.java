@@ -12,7 +12,7 @@ public class DescontoFactoryTest {
     void deveRetornarListaDeDescontos() {
         DescontoFactory factory = new DescontoFactory();
 
-        List<IDesconto> descontos = factory.getDescontos();
+        List<IDesconto> descontos = factory.criarDescontos();
 
         assertNotNull(descontos, "A lista de descontos não deveria ser nula.");
         assertEquals(3, descontos.size(), "A lista deveria conter exatamente 3 descontos.");

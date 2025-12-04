@@ -24,7 +24,7 @@ public class PericulosidadeTest {
         periculosidade = new Periculosidade();
         funcionario = new Funcionario();
         // Configuração de um Financeiro básico para o funcionário
-        funcionario.setFinanceiro(new Financeiro(null, new BigDecimal("5000.00"), 8.0, (byte) 5, BigDecimal.ZERO, funcionario));
+        funcionario.setFinanceiro(new Financeiro(null, new BigDecimal("5000.00"), 8.0, (byte) 5, BigDecimal.ZERO, BigDecimal.ZERO, funcionario));
     }
 
     @Test

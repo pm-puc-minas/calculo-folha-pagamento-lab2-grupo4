@@ -25,7 +25,7 @@ public class SalarioFamiliaTest {
         salarioFamilia = new SalarioFamilia();
         funcionario = new Funcionario();
         // Criação de um objeto Financeiro base
-        funcionario.setFinanceiro(new Financeiro(null, BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.ZERO, funcionario));
+        funcionario.setFinanceiro(new Financeiro(null, BigDecimal.ZERO, 8.0, (byte) 5, BigDecimal.ZERO, BigDecimal.ZERO, funcionario));
     }
 
     @Test
